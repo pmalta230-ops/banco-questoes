@@ -1196,111 +1196,62 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
- <script>
-  // =========================
-  // DASHBOARD: natural + conversão
-  // - Compraram (hoje): sobe bastante (motor)
-  // - Aprovados: sobe EXATAMENTE o mesmo que Compraram (mesmo tick)
-  // - Treinando: oscila no meio termo
-  // - Vendo agora: sobe mais do que desce
-  // =========================
-  function parseNumber(el) {
-    if (!el) return 0;
-    return parseInt((el.textContent || "").replace(/\D/g, ""), 10) || 0;
+<script>
+  // ====== DASHBOARD (Compras + Aprovados 1:1, nunca descem) ======
+
+  function parseIntSafe(text) {
+    return parseInt(String(text || "").replace(/\D/g, ""), 10) || 0;
   }
 
-  function formatPlus(n, withPlus = false) {
-    const formatted = n.toLocaleString('pt-BR');
-    return withPlus ? `${formatted}+` : formatted;
+  function formatPlus(n) {
+    return n.toLocaleString("pt-BR") + "+";
   }
 
-  function clamp(n, min, max) {
-    return Math.max(min, Math.min(max, n));
-  }
+  const elPurchases = document.getElementById("purchases-count");
+  const elApproved  = document.getElementById("total-approved");
+
+  // Pega os valores iniciais que já estão no HTML (ex.: 48 e 3.568+)
+  let purchases = parseIntSafe(elPurchases?.textContent);
+  let approved  = parseIntSafe(elApproved?.textContent);
+
+  // Ajuste aqui o "estilo" dos picos de aumento (prioriza compras):
+  const SMALL = [1,1,1,2,2,3];      // mais comum
+  const PEAK  = [4,5,7,8,10,12];    // picos (mais forte)
 
   function pick(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  function chance(p) {
-    return Math.random() < p;
-  }
+  function tick() {
+    // 75% sobe (bem frequente), 25% fica igual (não desce)
+    const willIncrease = Math.random() < 0.75;
 
-  const elViewers   = document.getElementById('viewers-count');
-  const elPurchases = document.getElementById('purchases-count');
-  const elQuestions = document.getElementById('questions-count');
-  const elApproved  = document.getElementById('total-approved');
+    if (willIncrease) {
+      // 30% chance de pico (p/ converter mais)
+      const step = (Math.random() < 0.30) ? pick(PEAK) : pick(SMALL);
 
-  let viewers   = parseNumber(elViewers);
-  let purchases = parseNumber(elPurchases);
-  let questions = parseNumber(elQuestions);
-  let approved  = parseNumber(elApproved);
+      purchases += step;     // NUNCA desce
+      approved  += step;     // sobe no MESMO tick e MESMO step (1:1)
 
-  // Ajuste as faixas conforme quiser
-  const RANGES = {
-    viewers:   { min: 35,   max: 240 },
-    purchases: { min: 1,    max: 9999 },      // compras hoje (só sobe)
-    questions: { min: 1200, max: 5200 },      // treinando (oscila)
-    approved:  { min: 1000, max: 999999 }     // aprovados (só sobe)
-  };
-
-  // VIEWERS: 5% cai, 20% pico, resto sobe leve
-  const VIEW_UP_SMALL = [0,1,1,2,2,3,5];
-  const VIEW_UP_PEAK  = [5,8,13,21];
-  const VIEW_DOWN     = [-1,-1,-2,-3];
-
-  // COMPRAS: prioriza subir (mais frequência + picos)
-  // maioria sobe 1~3, picos 5~12
-  const BUY_NORMAL = [0,1,1,2,2,3,3];
-  const BUY_PEAK   = [5,6,8,10,12];
-
-  // TREINANDO: oscila no meio termo
-  const Q_UP   = [0,5,8,13,21];
-  const Q_DOWN = [-5,-8,-13];
-
-  function updateDashboard() {
-    // 1) VIEWERS (mais sobe do que desce)
-    let dv;
-    if (chance(0.05)) dv = pick(VIEW_DOWN);
-    else if (chance(0.20)) dv = pick(VIEW_UP_PEAK);
-    else dv = pick(VIEW_UP_SMALL);
-
-    viewers = clamp(viewers + dv, RANGES.viewers.min, RANGES.viewers.max);
-    if (elViewers) elViewers.textContent = viewers;
-
-    // 2) COMPRAS (motor) + APROVADOS (espelha EXATO)
-    // chance alta de subir (conversão)
-    let dp = 0;
-    if (chance(0.70)) { // 70% dos ticks sobe algo
-      dp = chance(0.25) ? pick(BUY_PEAK) : pick(BUY_NORMAL); // 25% dos aumentos vira pico
-      if (dp === 0) dp = 1; // garante aumento quando cair aqui
+      if (elPurchases) elPurchases.textContent = purchases;
+      if (elApproved)  elApproved.textContent  = formatPlus(approved);
     }
 
-    purchases = clamp(purchases + dp, RANGES.purchases.min, RANGES.purchases.max);
-    approved  = clamp(approved  + dp, RANGES.approved.min,  RANGES.approved.max);
-
-    if (elPurchases) elPurchases.textContent = purchases;
-    if (elApproved)  elApproved.textContent  = formatPlus(approved, true);
-
-    // 3) TREINANDO (oscila)
-    const dq = chance(0.55) ? pick(Q_UP) : pick(Q_DOWN);
-    questions = clamp(questions + dq, RANGES.questions.min, RANGES.questions.max);
-    if (elQuestions) elQuestions.textContent = formatPlus(questions, true);
-
-    // Intervalo variável (mais natural)
-    const nextInMs = 3500 + Math.random() * 5500; // 3.5s a 9s
-    setTimeout(updateDashboard, nextInMs);
+    // Intervalo variável (natural): 3s a 9s
+    const nextMs = 3000 + Math.random() * 6000;
+    setTimeout(tick, nextMs);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(updateDashboard, 2000));
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => setTimeout(tick, 1800));
   } else {
-    setTimeout(updateDashboard, 2000);
+    setTimeout(tick, 1800);
   }
 </script>
  </body></body>
 
 </html>
+
 
 
 
