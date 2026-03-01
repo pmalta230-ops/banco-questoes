@@ -1215,8 +1215,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let approved  = parseIntSafe(elApproved?.textContent);
 
   // Ajuste aqui o "estilo" dos picos de aumento (prioriza compras):
-  const SMALL = [1,1,1,2,2,3];      // mais comum
-  const PEAK  = [4,5,7,8,10,12];    // picos (mais forte)
+  const SMALL = [1,2,2,3,3,4];      // mais comum
+  const PEAK  = [8,10,12,15,20,28];    // picos (mais forte)
 
   function pick(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
@@ -1224,11 +1224,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function tick() {
     // 75% sobe (bem frequente), 25% fica igual (não desce)
-    const willIncrease = Math.random() < 0.75;
+    const willIncrease = Math.random() < 0.88;
 
     if (willIncrease) {
       // 30% chance de pico (p/ converter mais)
-      const step = (Math.random() < 0.30) ? pick(PEAK) : pick(SMALL);
+      const step = (Math.random() < 0.40) ? pick(PEAK) : pick(SMALL);
 
       purchases += step;     // NUNCA desce
       approved  += step;     // sobe no MESMO tick e MESMO step (1:1)
@@ -1251,6 +1251,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </body></body>
 
 </html>
+
 
 
 
