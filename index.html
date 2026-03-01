@@ -1072,9 +1072,64 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
       });
     }
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d56240d9298e2a1',t:'MTc3MjM0NjkxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d56240d9298e2a1',t:'MTc3MjM0NjkxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></script>
+
+<script>
+  // ===== DASHBOARD AUTO INCREMENTO =====
+  function parseNumberFromEl(el) {
+    if (!el) return 0;
+    const raw = (el.textContent || "").replace(/\./g, "").replace(/\+/g, "").trim();
+    const n = parseInt(raw, 10);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function formatPtBR(n) {
+    return n.toLocaleString('pt-BR');
+  }
+
+  function updateDashboardNumbers() {
+    const viewersEl = document.getElementById('viewers-count');
+    const purchasesEl = document.getElementById('purchases-count');
+    const questionsEl = document.getElementById('questions-count');
+    const approvedEl = document.getElementById('total-approved');
+
+    if (!viewersEl || !purchasesEl || !questionsEl || !approvedEl) return;
+
+    let viewers = parseNumberFromEl(viewersEl);
+    let purchases = parseNumberFromEl(purchasesEl);
+    let questions = parseNumberFromEl(questionsEl);
+    let approved = parseNumberFromEl(approvedEl);
+
+    viewers += Math.floor(Math.random() * 4) + 1;
+
+    if (Math.random() < 0.35) purchases += 1;
+
+    questions += Math.floor(Math.random() * 31) + 10;
+
+    if (Math.random() < 0.25) approved += Math.floor(Math.random() * 2) + 1;
+
+    viewersEl.textContent = viewers;
+    purchasesEl.textContent = purchases;
+    questionsEl.textContent = formatPtBR(questions) + "+";
+    approvedEl.textContent = formatPtBR(approved) + "+";
+  }
+
+  function startDashboardAutoIncrement() {
+    updateDashboardNumbers();
+    setInterval(updateDashboardNumbers, 30000); // 30 segundos
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startDashboardAutoIncrement);
+  } else {
+    startDashboardAutoIncrement();
+  }
+</script>
+
+</body></body>
 
 </html>
+
 
 
 
