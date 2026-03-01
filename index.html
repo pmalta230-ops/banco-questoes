@@ -821,17 +821,17 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
       
       const notification = document.createElement('div');
       notification.className = 'popup-notification';
-      notification.innerHTML = 
-        <button class="popup-close" onclick="closeNotification()">×</button>
-        <div style="display: flex; gap: 12px;">
-          <span style="font-size: 20px; flex-shrink: 0;">${msg.emoji}</span>
-          <div style="flex: 1; min-width: 0;">
-            <p style="margin: 0; font-weight: 600; font-size: 14px; color: #111;">${msg.text}</p>
-            <p style="margin: 4px 0 0 0; font-size: 12px; color: #666;">${msg.detail}</p>
-            <p style="margin: 4px 0 0 0; font-size: 11px; color: #999;">há 1 min • ${msg.location}</p>
-          </div>
-        </div>
-      ;
+      notification.innerHTML = `
+  <button class="popup-close" onclick="closeNotification()">×</button>
+  <div style="display: flex; gap: 12px;">
+    <span style="font-size: 20px; flex-shrink: 0;">${msg.emoji}</span>
+    <div style="flex: 1; min-width: 0;">
+      <p style="margin: 0; font-weight: 600; font-size: 14px; color: #111;">${msg.text}</p>
+      <p style="margin: 4px 0 0 0; font-size: 12px; color: #666;">${msg.detail}</p>
+      <p style="margin: 4px 0 0 0; font-size: 11px; color: #999;">há 1 min • ${msg.location}</p>
+    </div>
+  </div>
+`;
       
       document.body.appendChild(notification);
       currentNotification = notification;
@@ -1307,6 +1307,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </body></body>
 
 </html>
+
 
 
 
