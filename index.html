@@ -1198,7 +1198,11 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
  <script>
   // =========================
-  // DASHBOARD: números naturais (saltos variáveis)
+  // DASHBOARD: comportamento mais natural
+  // - viewers: sobe mais do que desce
+  // - purchases: só sobe
+  // - questions (treinando): oscila no meio termo
+  // - approved: só sobe
   // =========================
   function parseNumber(el) {
     if (!el) return 0;
@@ -1206,7 +1210,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function formatPlus(n, withPlus = false) {
-    // pt-BR: 3.255
     const formatted = n.toLocaleString('pt-BR');
     return withPlus ? `${formatted}+` : formatted;
   }
@@ -1215,71 +1218,81 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.max(min, Math.min(max, n));
   }
 
-  // pega elementos
-  const elViewers = document.getElementById('viewers-count');
-  const elPurchases = document.getElementById('purchases-count');
-  const elQuestions = document.getElementById('questions-count');
-  const elApproved = document.getElementById('total-approved');
-
-  // valores iniciais (do HTML)
-  let viewers = parseNumber(elViewers);
-  let purchases = parseNumber(elPurchases);
-  let questions = parseNumber(elQuestions);
-  let approved = parseNumber(elApproved);
-
-  // faixas (ajuste como quiser)
-  const RANGES = {
-    viewers:   { min: 25,  max: 180 },      // pessoas online (pode subir e cair)
-    purchases: { min: 3,   max: 120 },      // compras hoje (só sobe)
-    questions: { min: 900, max: 99999 },    // questões/dia (só sobe)
-    approved:  { min: 800, max: 999999 }    // aprovados (só sobe)
-  };
-
-  // "saltos" possíveis (parece humano)
-  const JUMPS_SMALL = [0, 1, 1, 2, 2, 3, 5];        // mais comum
-  const JUMPS_PEAK  = [5, 8, 13, 21];               // picos ocasionais
-  const JUMPS_DROP  = [0, -1, -1, -2, -3, -5];      // quedinhas (só viewers)
-
   function pick(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  function chance(pct) {
-    return Math.random() < pct;
+  function chance(p) {
+    return Math.random() < p;
   }
 
+  const elViewers   = document.getElementById('viewers-count');
+  const elPurchases = document.getElementById('purchases-count');
+  const elQuestions = document.getElementById('questions-count');
+  const elApproved  = document.getElementById('total-approved');
+
+  let viewers   = parseNumber(elViewers);
+  let purchases = parseNumber(elPurchases);
+  let questions = parseNumber(elQuestions);
+  let approved  = parseNumber(elApproved);
+
+  // Ajuste as faixas aqui
+  const RANGES = {
+    viewers:   { min: 35,   max: 220 },     // vendo agora (mais sobe, pouco desce)
+    purchases: { min: 1,    max: 250 },     // compraram hoje (só sobe)
+    questions: { min: 1200, max: 5200 },    // treinando (oscila dentro desse range)
+    approved:  { min: 1000, max: 999999 }   // aprovados (só sobe)
+  };
+
+  // VIEWERS: mais progressivo
+  // 75% sobe leve, 15% sobe pico, 10% cai pouquinho
+  const VIEW_UP_SMALL = [0,1,1,2,2,3,5];
+  const VIEW_UP_PEAK  = [5,8,13,21];
+  const VIEW_DOWN     = [-1,-1,-2,-3];
+
+  // PURCHASES: só sobe (geralmente 0/1, pico raro)
+  const BUY_NORMAL = [0,0,0,1,1,1,2];
+  const BUY_PEAK   = [2,3,5];
+
+  // QUESTIONS (treinando): “meio termo” (sobe e desce, mas fica dentro da faixa)
+  // (parece contador de atividade, não acumulado)
+  const Q_UP   = [0,5,8,13,21];
+  const Q_DOWN = [-5,-8,-13];
+
+  // APPROVED: só sobe bem devagar
+  const APP_NORMAL = [0,0,1,1,1,2];
+  const APP_PEAK   = [2,3,5];
+
   function updateDashboard() {
-    // VIEWERS: sobe e cai (mais real)
-    // 15% chance de queda pequena, 10% chance de pico, resto pequeno aumento
+    // VIEWERS (prioriza subir)
     let dv;
-    if (chance(0.15)) dv = pick(JUMPS_DROP);
-    else if (chance(0.10)) dv = pick(JUMPS_PEAK);
-    else dv = pick(JUMPS_SMALL);
+    if (chance(0.10)) dv = pick(VIEW_DOWN);            // 10% cai um pouco
+    else if (chance(0.15)) dv = pick(VIEW_UP_PEAK);    // 15% pico
+    else dv = pick(VIEW_UP_SMALL);                     // resto sobe leve
 
     viewers = clamp(viewers + dv, RANGES.viewers.min, RANGES.viewers.max);
     if (elViewers) elViewers.textContent = viewers;
 
-    // PURCHASES (HOJE): geralmente +0/+1/+2, pico raro
-    let dp = chance(0.06) ? pick([2,3,5]) : pick([0,0,0,1,1,2]);
+    // PURCHASES (só sobe)
+    const dp = chance(0.06) ? pick(BUY_PEAK) : pick(BUY_NORMAL);
     purchases = clamp(purchases + dp, RANGES.purchases.min, RANGES.purchases.max);
     if (elPurchases) elPurchases.textContent = purchases;
 
-    // QUESTIONS/DIA: sobe devagar, pico raro (mantém com +)
-    let dq = chance(0.08) ? pick([15, 20, 30, 40]) : pick([0, 2, 3, 5, 8, 13]);
+    // QUESTIONS (treinando) oscila no meio termo
+    const dq = chance(0.55) ? pick(Q_UP) : pick(Q_DOWN); // tende a oscilar
     questions = clamp(questions + dq, RANGES.questions.min, RANGES.questions.max);
     if (elQuestions) elQuestions.textContent = formatPlus(questions, true);
 
-    // APROVADOS: sobe bem de leve (pra não ficar absurdo)
-    let da = chance(0.05) ? pick([2,3,5]) : pick([0,0,1,1,1,2]);
+    // APPROVED (só sobe, bem lento)
+    const da = chance(0.05) ? pick(APP_PEAK) : pick(APP_NORMAL);
     approved = clamp(approved + da, RANGES.approved.min, RANGES.approved.max);
     if (elApproved) elApproved.textContent = formatPlus(approved, true);
 
-    // próximo update com tempo variando (mais natural)
-    const nextInMs = 3500 + Math.random() * 5500; // 3.5s a 9s
+    // Intervalo variável (mais natural)
+    const nextInMs = 4000 + Math.random() * 6000; // 4s a 10s
     setTimeout(updateDashboard, nextInMs);
   }
 
-  // inicia depois que a página carregar
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => setTimeout(updateDashboard, 2000));
   } else {
@@ -1289,6 +1302,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </body></body>
 
 </html>
+
 
 
 
