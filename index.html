@@ -1197,60 +1197,144 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script>
-  // ====== DASHBOARD (Compras + Aprovados 1:1, nunca descem) ======
+  // ====== DASHBOARD (Compras + Aprovados 1:1) + Vendo Agora (natural e sempre maior) ======
 
   function parseIntSafe(text) {
     return parseInt(String(text || "").replace(/\D/g, ""), 10) || 0;
   }
-
   function formatPlus(n) {
     return n.toLocaleString("pt-BR") + "+";
   }
-
-  const elPurchases = document.getElementById("purchases-count");
-  const elApproved  = document.getElementById("total-approved");
-
-  // Pega os valores iniciais que já estão no HTML (ex.: 48 e 3.568+)
-  let purchases = parseIntSafe(elPurchases?.textContent);
-  let approved  = parseIntSafe(elApproved?.textContent);
-
-  // Ajuste aqui o "estilo" dos picos de aumento (prioriza compras):
-  const SMALL = [1,2,2,3,3,4];      // mais comum
-  const PEAK  = [8,10,12,15,20,28];    // picos (mais forte)
-
   function pick(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  function tick() {
-    // 75% sobe (bem frequente), 25% fica igual (não desce)
-    const willIncrease = Math.random() < 0.88;
+  const elViewers   = document.getElementById("viewers-count");
+  const elPurchases = document.getElementById("purchases-count");
+  const elApproved  = document.getElementById("total-approved");
+  const elQuestions = document.getElementById("questions-count"); // opcional
+
+  // Valores iniciais (vem do HTML)
+  let viewers   = parseIntSafe(elViewers?.textContent);
+  let purchases = parseIntSafe(elPurchases?.textContent);
+  let approved  = parseIntSafe(elApproved?.textContent);
+  let questions = parseIntSafe(elQuestions?.textContent); // se tiver "1302+"
+
+  // =========================
+  // 1) AJUSTE A AGRESSIVIDADE DAS COMPRAS AQUI
+  // =========================
+  const BUY_SMALL = [1,2,2,3,3,4];          // comum
+  const BUY_PEAK  = [8,10,12,15,20,28];     // picos (mais forte)
+  const BUY_INCREASE_CHANCE = 0.88;         // 0.88 = sobe muito (mais conversão)
+  const BUY_PEAK_CHANCE     = 0.40;         // 0.40 = mais picos
+
+  // Intervalo das compras (ms)
+  const BUY_NEXT_MIN_MS = 3000;
+  const BUY_NEXT_MAX_MS = 9000;
+
+  // =========================
+  // 2) AJUSTE O "VENDO AGORA" AQUI
+  // =========================
+  // Regra: viewers >= purchases + margem
+  const VIEW_MIN_MARGIN = 90;     // mínimo acima das compras (aumente pra viewers ficar bem maior)
+  const VIEW_MAX_MARGIN = 400;    // teto acima das compras (aumente pra permitir viewers bem alto)
+
+  // “Jeito” do sobe/desce do viewers (picos naturais)
+  const VIEW_UP_SMALL  = [1,2,3,4,5,7];
+  const VIEW_UP_PEAK   = [10,14,18,25,35,50];   // picos de entrada
+  const VIEW_DOWN_SMALL= [1,2,3,4,6,8];
+  const VIEW_DOWN_PEAK = [10,14,18,25];         // quedas (saída)
+
+  const VIEW_UP_CHANCE      = 0.62;  // 0.62 = tende a subir mais que cair
+  const VIEW_UP_PEAK_CHANCE = 0.30;  // picos de alta
+  const VIEW_DOWN_PEAK_CHANCE = 0.18; // picos de queda
+
+  // Intervalo do viewers (ms)
+  const VIEW_NEXT_MIN_MS = 1800;
+  const VIEW_NEXT_MAX_MS = 5200;
+
+  function ensureViewersFloor() {
+    const floor = purchases + VIEW_MIN_MARGIN;
+    if (viewers < floor) viewers = floor;
+  }
+
+  function clampViewers() {
+    const minV = purchases + VIEW_MIN_MARGIN;
+    const maxV = purchases + VIEW_MAX_MARGIN;
+    viewers = Math.max(minV, Math.min(maxV, viewers));
+  }
+
+  function tickBuys() {
+    const willIncrease = Math.random() < BUY_INCREASE_CHANCE;
 
     if (willIncrease) {
-      // 30% chance de pico (p/ converter mais)
-      const step = (Math.random() < 0.40) ? pick(PEAK) : pick(SMALL);
+      const step = (Math.random() < BUY_PEAK_CHANCE) ? pick(BUY_PEAK) : pick(BUY_SMALL);
 
-      purchases += step;     // NUNCA desce
-      approved  += step;     // sobe no MESMO tick e MESMO step (1:1)
+      purchases += step;   // nunca desce
+      approved  += step;   // 1:1 com compras
 
       if (elPurchases) elPurchases.textContent = purchases;
       if (elApproved)  elApproved.textContent  = formatPlus(approved);
+
+      // (opcional) aumenta "questões/dia" bem de leve
+      if (elQuestions && questions) {
+        const qStep = Math.random() < 0.25 ? pick([10,15,20,30]) : pick([0,5,8]);
+        questions += qStep;
+        elQuestions.textContent = questions.toLocaleString("pt-BR") + "+";
+      }
+
+      // garante que viewers nunca fique abaixo do mínimo após subir compras
+      ensureViewersFloor();
+      if (elViewers) elViewers.textContent = viewers;
     }
 
-    // Intervalo variável (natural): 3s a 9s
-    const nextMs = 3000 + Math.random() * 6000;
-    setTimeout(tick, nextMs);
+    const nextMs = BUY_NEXT_MIN_MS + Math.random() * (BUY_NEXT_MAX_MS - BUY_NEXT_MIN_MS);
+    setTimeout(tickBuys, nextMs);
+  }
+
+  function tickViewers() {
+    // decide sobe ou desce (mas com limites e sem ficar menor que compras+margem)
+    const goUp = Math.random() < VIEW_UP_CHANCE;
+
+    if (goUp) {
+      const step = (Math.random() < VIEW_UP_PEAK_CHANCE) ? pick(VIEW_UP_PEAK) : pick(VIEW_UP_SMALL);
+      viewers += step;
+    } else {
+      const step = (Math.random() < VIEW_DOWN_PEAK_CHANCE) ? pick(VIEW_DOWN_PEAK) : pick(VIEW_DOWN_SMALL);
+      viewers -= step;
+    }
+
+    clampViewers();
+
+    if (elViewers) elViewers.textContent = viewers;
+
+    const nextMs = VIEW_NEXT_MIN_MS + Math.random() * (VIEW_NEXT_MAX_MS - VIEW_NEXT_MIN_MS);
+    setTimeout(tickViewers, nextMs);
+  }
+
+  function startDashboard() {
+    // se o HTML vier com viewers menor que compras, corrigimos na largada
+    ensureViewersFloor();
+    clampViewers();
+
+    if (elViewers) elViewers.textContent = viewers;
+    if (elPurchases) elPurchases.textContent = purchases;
+    if (elApproved) elApproved.textContent = formatPlus(approved);
+
+    setTimeout(tickBuys, 1800);
+    setTimeout(tickViewers, 900);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => setTimeout(tick, 1800));
+    document.addEventListener("DOMContentLoaded", startDashboard);
   } else {
-    setTimeout(tick, 1800);
+    startDashboard();
   }
 </script>
  </body></body>
 
 </html>
+
 
 
 
