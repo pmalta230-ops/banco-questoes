@@ -1126,9 +1126,68 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
   }
 </script>
 
-</body></body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll(".faq-item");
+
+  items.forEach((item) => {
+    const btn = item.querySelector(".faq-trigger");
+    const content = item.querySelector(".faq-content");
+
+    if (!btn || !content) return;
+
+    // garante estado inicial fechado
+    content.style.maxHeight = "0px";
+    content.style.overflow = "hidden";
+
+    // melhora clique no mobile
+    btn.setAttribute("type", "button");
+    btn.style.cursor = "pointer";
+
+    const closeItem = (it) => {
+      it.classList.remove("active");
+      const c = it.querySelector(".faq-content");
+      if (c) c.style.maxHeight = "0px";
+    };
+
+    const openItem = (it) => {
+      it.classList.add("active");
+      const c = it.querySelector(".faq-content");
+      if (c) c.style.maxHeight = c.scrollHeight + "px";
+    };
+
+    const toggle = () => {
+      const isOpen = item.classList.contains("active");
+
+      // fecha todos
+      items.forEach(closeItem);
+
+      // abre o clicado
+      if (!isOpen) openItem(item);
+    };
+
+    // click normal
+    btn.addEventListener("click", toggle);
+
+    // reforço para iOS (às vezes ajuda)
+    btn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      toggle();
+    }, { passive: false });
+  });
+
+  // se a tela mudar (girar celular), recalcula altura do que estiver aberto
+  window.addEventListener("resize", () => {
+    document.querySelectorAll(".faq-item.active .faq-content").forEach((c) => {
+      c.style.maxHeight = c.scrollHeight + "px";
+    });
+  });
+});
+</script>
+ </body></body>
 
 </html>
+
 
 
 
