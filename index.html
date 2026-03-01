@@ -1196,9 +1196,100 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
+ <script>
+  // =========================
+  // DASHBOARD: números naturais (saltos variáveis)
+  // =========================
+  function parseNumber(el) {
+    if (!el) return 0;
+    return parseInt((el.textContent || "").replace(/\D/g, ""), 10) || 0;
+  }
+
+  function formatPlus(n, withPlus = false) {
+    // pt-BR: 3.255
+    const formatted = n.toLocaleString('pt-BR');
+    return withPlus ? `${formatted}+` : formatted;
+  }
+
+  function clamp(n, min, max) {
+    return Math.max(min, Math.min(max, n));
+  }
+
+  // pega elementos
+  const elViewers = document.getElementById('viewers-count');
+  const elPurchases = document.getElementById('purchases-count');
+  const elQuestions = document.getElementById('questions-count');
+  const elApproved = document.getElementById('total-approved');
+
+  // valores iniciais (do HTML)
+  let viewers = parseNumber(elViewers);
+  let purchases = parseNumber(elPurchases);
+  let questions = parseNumber(elQuestions);
+  let approved = parseNumber(elApproved);
+
+  // faixas (ajuste como quiser)
+  const RANGES = {
+    viewers:   { min: 25,  max: 180 },      // pessoas online (pode subir e cair)
+    purchases: { min: 3,   max: 120 },      // compras hoje (só sobe)
+    questions: { min: 900, max: 99999 },    // questões/dia (só sobe)
+    approved:  { min: 800, max: 999999 }    // aprovados (só sobe)
+  };
+
+  // "saltos" possíveis (parece humano)
+  const JUMPS_SMALL = [0, 1, 1, 2, 2, 3, 5];        // mais comum
+  const JUMPS_PEAK  = [5, 8, 13, 21];               // picos ocasionais
+  const JUMPS_DROP  = [0, -1, -1, -2, -3, -5];      // quedinhas (só viewers)
+
+  function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function chance(pct) {
+    return Math.random() < pct;
+  }
+
+  function updateDashboard() {
+    // VIEWERS: sobe e cai (mais real)
+    // 15% chance de queda pequena, 10% chance de pico, resto pequeno aumento
+    let dv;
+    if (chance(0.15)) dv = pick(JUMPS_DROP);
+    else if (chance(0.10)) dv = pick(JUMPS_PEAK);
+    else dv = pick(JUMPS_SMALL);
+
+    viewers = clamp(viewers + dv, RANGES.viewers.min, RANGES.viewers.max);
+    if (elViewers) elViewers.textContent = viewers;
+
+    // PURCHASES (HOJE): geralmente +0/+1/+2, pico raro
+    let dp = chance(0.06) ? pick([2,3,5]) : pick([0,0,0,1,1,2]);
+    purchases = clamp(purchases + dp, RANGES.purchases.min, RANGES.purchases.max);
+    if (elPurchases) elPurchases.textContent = purchases;
+
+    // QUESTIONS/DIA: sobe devagar, pico raro (mantém com +)
+    let dq = chance(0.08) ? pick([15, 20, 30, 40]) : pick([0, 2, 3, 5, 8, 13]);
+    questions = clamp(questions + dq, RANGES.questions.min, RANGES.questions.max);
+    if (elQuestions) elQuestions.textContent = formatPlus(questions, true);
+
+    // APROVADOS: sobe bem de leve (pra não ficar absurdo)
+    let da = chance(0.05) ? pick([2,3,5]) : pick([0,0,1,1,1,2]);
+    approved = clamp(approved + da, RANGES.approved.min, RANGES.approved.max);
+    if (elApproved) elApproved.textContent = formatPlus(approved, true);
+
+    // próximo update com tempo variando (mais natural)
+    const nextInMs = 3500 + Math.random() * 5500; // 3.5s a 9s
+    setTimeout(updateDashboard, nextInMs);
+  }
+
+  // inicia depois que a página carregar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(updateDashboard, 2000));
+  } else {
+    setTimeout(updateDashboard, 2000);
+  }
+</script>
  </body></body>
 
 </html>
+
 
 
 
