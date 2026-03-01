@@ -1,17 +1,15 @@
+
 <!doctype html>
 <html lang="pt-BR" class="h-full">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Banco de Questões Estratégico</title>
-
-  <!-- Tailwind via CDN (rápido pra publicar igual ao Canva) -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-
+  <script src="/_sdk/element_sdk.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -33,15 +31,23 @@
       }
     }
   </script>
-
   <style>
-    html, body { height: 100%; margin: 0; padding: 0; }
-    body { box-sizing: border-box; }
-
-    .app-wrapper { width: 100%; min-height: 100%; overflow-x: hidden; }
-    .gradient-hero { background: linear-gradient(135deg, #6C2BD9 0%, #4C1D95 100%); }
-    .gradient-roxo { background: linear-gradient(135deg, #4C1D95 0%, #6C2BD9 100%); }
-
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .app-wrapper {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+    .gradient-hero {
+      background: linear-gradient(135deg, #6C2BD9 0%, #4C1D95 100%);
+    }
+    .gradient-roxo {
+      background: linear-gradient(135deg, #4C1D95 0%, #6C2BD9 100%);
+    }
     .btn-cta {
       background: #22C55E;
       transition: all 0.3s ease;
@@ -52,23 +58,48 @@
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
     }
-
-    .card-hover { transition: all 0.3s ease; }
-    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(108, 43, 217, 0.2); }
-
-    .faq-item { border-bottom: 1px solid #E5E7EB; }
-    .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-    .faq-item.active .faq-content { max-height: 200px; }
-    .faq-item.active .faq-icon { transform: rotate(180deg); }
-    .faq-icon { transition: transform 0.3s ease; }
-
-    .pulse-animation { animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-
-    .float-animation { animation: float 3s ease-in-out infinite; }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-    .shine { position: relative; overflow: hidden; }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 40px rgba(108, 43, 217, 0.2);
+    }
+    .faq-item {
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .faq-item.active .faq-content {
+      max-height: 200px;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+    .faq-icon {
+      transition: transform 0.3s ease;
+    }
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .shine {
+      position: relative;
+      overflow: hidden;
+    }
     .shine::after {
       content: '';
       position: absolute;
@@ -76,7 +107,12 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      background: linear-gradient(
+        to right,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.3) 50%,
+        rgba(255,255,255,0) 100%
+      );
       transform: rotate(30deg);
       animation: shine 3s infinite;
     }
@@ -84,8 +120,6 @@
       0% { transform: translateX(-100%) rotate(30deg); }
       100% { transform: translateX(100%) rotate(30deg); }
     }
-
-    /* Pop-up */
     .popup-notification {
       position: fixed;
       bottom: 20px;
@@ -99,13 +133,27 @@
       animation: slideInNotification 0.4s ease forwards;
     }
     @keyframes slideInNotification {
-      from { opacity: 0; transform: translateX(400px); }
-      to { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(400px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
-    .popup-notification.exit { animation: slideOutNotification 0.4s ease forwards; }
+    .popup-notification.exit {
+      animation: slideOutNotification 0.4s ease forwards;
+    }
     @keyframes slideOutNotification {
-      from { opacity: 1; transform: translateX(0); }
-      to { opacity: 0; transform: translateX(400px); }
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(400px);
+      }
     }
     .popup-close {
       position: absolute;
@@ -123,225 +171,902 @@
       align-items: center;
       justify-content: center;
     }
-    .popup-close:hover { color: #333; }
+    .popup-close:hover {
+      color: #333;
+    }
   </style>
-</head>
-
-<body class="h-full font-body text-preto-suave">
-<div class="app-wrapper">
-
-  <!-- ⏰ BARRA DE URGÊNCIA FIXA -->
-  <div id="urgency-bar" class="fixed top-0 left-0 right-0 bg-gradient-to-r from-amarelo to-orange-400 text-preto-suave py-3 px-4 text-center font-bold text-sm md:text-base z-50 shadow-lg">
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body text-preto-suave">
+  <div class="app-wrapper"><!-- ⏰ BARRA DE URGÊNCIA FIXA -->
+   <div id="urgency-bar" class="fixed top-0 left-0 right-0 bg-gradient-to-r from-amarelo to-orange-400 text-preto-suave py-3 px-4 text-center font-bold text-sm md:text-base z-50 shadow-lg">
     <div class="max-w-6xl mx-auto flex items-center justify-center gap-2">
-      <span>⏰</span>
-      <span id="urgency-text">Oferta de lançamento termina em: </span>
-      <span id="countdown" class="font-display font-bold">14:37:52</span>
+     <span>⏰</span> <span id="urgency-text">Oferta de lançamento termina em: </span> <span id="countdown" class="font-display font-bold">14:37:52</span>
     </div>
-  </div>
-
-  <!-- 🟣 HERO -->
-  <section class="gradient-hero min-h-screen flex items-center py-16 px-4 md:px-8 pt-32 md:pt-28">
+   </div><!-- 🟣 1ª DOBRA – HERO -->
+   <section class="gradient-hero min-h-screen flex items-center py-16 px-4 md:px-8 pt-32 md:pt-28">
     <div class="max-w-6xl mx-auto w-full">
-      <div class="flex flex-col lg:flex-row items-center gap-12">
-        <div class="flex-1 text-center lg:text-left">
-          <span class="inline-block bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full mb-6 backdrop-blur-sm"> 🎯 Método usado por aprovados </span>
-
-          <h1 id="headline" class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            Você não precisa estudar mais.<br>
-            <span class="text-amarelo">Precisa resolver as questões certas.</span>
-          </h1>
-
-          <p id="subheadline" class="text-xl md:text-2xl text-white/90 mb-8 max-w-xl mx-auto lg:mx-0">
-            Banco de questões focado no que mais cai no ENEM e vestibulares.
-          </p>
-
-          <div class="grid grid-cols-2 gap-4 mb-8 max-w-md mx-auto lg:mx-0">
-            <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span><span>Organizado por assunto</span></div>
-            <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span><span>Foco no que mais cai</span></div>
-            <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span><span>Treino estratégico</span></div>
-            <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span><span>Acesso imediato</span></div>
-          </div>
-
-          <a href="#oferta" class="btn-cta inline-block text-white font-bold text-lg md:text-xl px-10 py-5 rounded-full shine" id="cta-hero">QUERO COMEÇAR AGORA</a>
-          <p class="text-white/70 text-sm mt-4">🔒 Garantia 7 dias | ⚡ Acesso imediato</p>
+     <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1 text-center lg:text-left"><span class="inline-block bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-full mb-6 backdrop-blur-sm"> 🎯 Método usado por aprovados </span>
+       <h1 id="headline" class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">Você não precisa estudar mais.<br><span class="text-amarelo">Precisa resolver as questões certas.</span></h1>
+       <p id="subheadline" class="text-xl md:text-2xl text-white/90 mb-8 max-w-xl mx-auto lg:mx-0">Banco de questões focado no que mais cai no ENEM e vestibulares.</p>
+       <div class="grid grid-cols-2 gap-4 mb-8 max-w-md mx-auto lg:mx-0">
+        <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span> <span>Organizado por assunto</span>
         </div>
-
-        <div class="flex-1 float-animation">
-          <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-6 md:p-8 border border-white/20">
-            <div class="bg-white rounded-2xl p-6 shadow-2xl">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center"><span class="text-2xl">📚</span></div>
-                <div>
-                  <h3 class="font-display font-bold text-lg">Banco de Questões</h3>
-                  <p class="text-sm text-gray-500">Acesso completo</p>
-                </div>
-              </div>
-              <div class="space-y-3">
-                <div class="flex items-center justify-between p-3 bg-roxo-claro rounded-lg"><span class="text-sm font-medium">Matemática</span><span class="text-xs bg-roxo text-white px-2 py-1 rounded-full">250+ questões</span></div>
-                <div class="flex items-center justify-between p-3 bg-roxo-claro rounded-lg"><span class="text-sm font-medium">Português</span><span class="text-xs bg-roxo text-white px-2 py-1 rounded-full">200+ questões</span></div>
-                <div class="flex items-center justify-between p-3 bg-roxo-claro rounded-lg"><span class="text-sm font-medium">Ciências</span><span class="text-xs bg-roxo text-white px-2 py-1 rounded-full">180+ questões</span></div>
-              </div>
-              <div class="mt-4 pt-4 border-t border-gray-100">
-                <div class="flex items-center gap-2 text-verde-cta"><span>✓</span><span class="text-sm font-medium">Gabarito comentado</span></div>
-              </div>
-            </div>
-          </div>
+        <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span> <span>Foco no que mais cai</span>
         </div>
-
+        <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span> <span>Treino estratégico</span>
+        </div>
+        <div class="flex items-center gap-3 text-white"><span class="w-6 h-6 bg-verde-cta rounded-full flex items-center justify-center text-sm">✓</span> <span>Acesso imediato</span>
+        </div>
+       </div><a href="#oferta" class="btn-cta inline-block text-white font-bold text-lg md:text-xl px-10 py-5 rounded-full shine" id="cta-hero"> QUERO COMEÇAR AGORA </a>
+       <p class="text-white/70 text-sm mt-4">🔒 Garantia 7 dias | ⚡ Acesso imediato</p>
       </div>
+      <div class="flex-1 float-animation">
+       <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-6 md:p-8 border border-white/20">
+        <div class="bg-white rounded-2xl p-6 shadow-2xl">
+         <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center"><span class="text-2xl">📚</span>
+          </div>
+          <div>
+           <h3 class="font-display font-bold text-lg">Banco de Questões</h3>
+           <p class="text-sm text-gray-500">Acesso completo</p>
+          </div>
+         </div>
+         <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 bg-roxo-claro rounded-lg"><span class="text-sm font-medium">Matemática</span> <span class="text-xs bg-roxo text-white px-2 py-1 rounded-full">250+ questões</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-roxo-claro rounded-lg"><span class="text-sm font-medium">Português</span> <span class="text-xs bg-roxo text-white px-2 py-1 rounded-full">200+ questões</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-roxo-claro rounded-lg"><span class="text-sm font-medium">Ciências</span> <span class="text-xs bg-roxo text-white px-2 py-1 rounded-full">180+ questões</span>
+          </div>
+         </div>
+         <div class="mt-4 pt-4 border-t border-gray-100">
+          <div class="flex items-center gap-2 text-verde-cta"><span>✓</span> <span class="text-sm font-medium">Gabarito comentado</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
     </div>
-  </section>
-
-  <!-- (o restante do seu HTML segue igual — mantive tudo) -->
-
-  <!-- ⚪ 6ª DOBRA – OFERTA (AJUSTADA PRA 997 -> 59,99 + VITALÍCIO) -->
-  <section id="oferta" class="bg-white py-20 px-4 md:px-8">
+   </section><!-- 🏆 BLOCO ESTRATÉGICO - POR QUE FUNCIONA -->
+   <section class="bg-white py-16 px-4 md:px-8">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Por que este método <span class="text-roxo">funciona?</span></h2>
+      <p class="text-gray-600">Vestibular aprova quem treina certo, não quem estuda mais.</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-gradient-to-br from-roxo-claro to-white rounded-2xl p-8 border-2 border-roxo/20 card-hover">
+       <div class="w-14 h-14 bg-roxo rounded-2xl flex items-center justify-center mb-6"><span class="text-2xl">🎯</span>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Foco no que mais cai</h3>
+       <p class="text-gray-700">Nenhuma perda de tempo com tópicos irrelevantes. Apenas questões estratégicas que realmente importam.</p>
+      </div>
+      <div class="bg-gradient-to-br from-roxo-claro to-white rounded-2xl p-8 border-2 border-roxo/20 card-hover">
+       <div class="w-14 h-14 bg-roxo rounded-2xl flex items-center justify-center mb-6"><span class="text-2xl">📊</span>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Treino progressivo por nível</h3>
+       <p class="text-gray-700">Comece fácil e evolua naturalmente. Cada nível prepara você para o próximo desafio.</p>
+      </div>
+      <div class="bg-gradient-to-br from-roxo-claro to-white rounded-2xl p-8 border-2 border-roxo/20 card-hover">
+       <div class="w-14 h-14 bg-roxo rounded-2xl flex items-center justify-center mb-6"><span class="text-2xl">📈</span>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Evolução baseada em prática real</h3>
+       <p class="text-gray-700">Seu progresso é mensurável e real. Veja sua nota subindo a cada semana de treino.</p>
+      </div>
+     </div>
+     <div class="mt-12 text-center"><a href="#oferta" class="btn-cta inline-block text-white font-bold text-lg px-10 py-5 rounded-full"> COMEÇAR AGORA </a>
+     </div>
+    </div>
+   </section><!-- 📊 DASHBOARD DE AUTORIDADE - MOVIMENTO AGORA -->
+   <section class="bg-cinza-claro py-16 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-2">🔥 Isso está acontecendo agora</h2>
+      <p class="text-gray-600 text-lg">Centenas de alunos já estão treinando e evoluindo. Você quer ficar para trás?</p>
+     </div>
+     <div class="grid md:grid-cols-4 gap-6 mb-8"><!-- Card 1: Vendo Agora -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-l-4 border-roxo">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">👁️</span>
+       </div>
+       <p class="text-gray-600 text-sm mb-2">Vendo agora</p>
+       <p class="font-display font-bold text-3xl text-roxo mb-1" id="viewers-count">37</p>
+       <p class="text-gray-500 text-xs">pessoas online</p>
+      </div><!-- Card 2: Compraram -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-l-4 border-verde-cta">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">🛒</span>
+       </div>
+       <p class="text-gray-600 text-sm mb-2">Compraram</p>
+       <p class="font-display font-bold text-3xl text-verde-cta mb-1" id="purchases-count">16</p>
+       <p class="text-gray-500 text-xs">esta semana</p>
+      </div><!-- Card 3: Treinando -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-l-4 border-amarelo">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">⚡</span>
+       </div>
+       <p class="text-gray-600 text-sm mb-2">Treinando</p>
+       <p class="font-display font-bold text-3xl text-amarelo mb-1" id="questions-count">1302+</p>
+       <p class="text-gray-500 text-xs">questões/dia</p>
+      </div><!-- Card 4: Total (Destaque) -->
+      <div class="bg-roxo rounded-2xl p-6 shadow-lg text-white border-l-4 border-amarelo">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">🎓</span>
+       </div>
+       <p class="text-white/80 text-sm mb-2">Aprovados</p>
+       <p class="font-display font-bold text-3xl mb-1" id="total-approved">1.595+</p>
+       <p class="text-white/60 text-xs">nossos alunos</p>
+      </div>
+     </div><!-- Lista de Atividade -->
+     <div class="bg-white rounded-2xl p-8 shadow-md">
+      <h3 class="font-display font-bold text-lg mb-6">Atividade em tempo real</h3>
+      <div class="space-y-4" id="activity-list">
+       <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div>
+         <p class="font-semibold text-gray-800">Camila R. — Comprou acesso hoje</p>
+         <p class="text-sm text-gray-500">Garantiu acesso vitalício</p>
+        </div><span class="text-xs text-gray-400">agora</span>
+       </div>
+       <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div>
+         <p class="font-semibold text-gray-800">Marina S. — Começou a treinar Matemática</p>
+         <p class="text-sm text-gray-500">Resolvendo as questões</p>
+        </div><span class="text-xs text-gray-400">1 min</span>
+       </div>
+       <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div>
+         <p class="font-semibold text-gray-800">João P. — Resolveu 50 questões hoje</p>
+         <p class="text-sm text-gray-500">Acertou 38 questões</p>
+        </div><span class="text-xs text-gray-400">3 min</span>
+       </div>
+       <div class="flex items-center justify-between">
+        <div>
+         <p class="font-semibold text-gray-800">Lucas M. — Acertou 15 questões seguidas</p>
+         <p class="text-sm text-gray-500">Série de acertos em Física</p>
+        </div><span class="text-xs text-gray-400">5 min</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ⚪ SEÇÃO "PARA QUEM É / PARA QUEM NÃO É" -->
+   <section class="bg-white py-16 px-4 md:px-8">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-12">Isso é para você <span class="text-roxo">se…</span></h2>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-green-50 rounded-2xl p-8 border-l-4 border-verde-cta">
+       <h3 class="font-display font-bold text-xl mb-6 text-verde-cta flex items-center gap-2"><span class="text-2xl">✅</span> Perfeito para você</h3>
+       <ul class="space-y-4">
+        <li class="flex items-start gap-3"><span class="text-verde-cta font-bold text-lg flex-shrink-0">✔</span> <span class="text-gray-700">Quer aumentar sua nota resolvendo questões focadas</span></li>
+        <li class="flex items-start gap-3"><span class="text-verde-cta font-bold text-lg flex-shrink-0">✔</span> <span class="text-gray-700">Está cansado de estudar teoria infinita e não evoluir</span></li>
+        <li class="flex items-start gap-3"><span class="text-verde-cta font-bold text-lg flex-shrink-0">✔</span> <span class="text-gray-700">Quer um método direto e estratégico para o ENEM</span></li>
+        <li class="flex items-start gap-3"><span class="text-verde-cta font-bold text-lg flex-shrink-0">✔</span> <span class="text-gray-700">Busca praticar com questões reais de provas anteriores</span></li>
+        <li class="flex items-start gap-3"><span class="text-verde-cta font-bold text-lg flex-shrink-0">✔</span> <span class="text-gray-700">Quer treinar de forma inteligente e otimizada</span></li>
+       </ul>
+      </div>
+      <div class="bg-red-50 rounded-2xl p-8 border-l-4 border-red-400">
+       <h3 class="font-display font-bold text-xl mb-6 text-red-600 flex items-center gap-2"><span class="text-2xl">❌</span> Isso NÃO é para você</h3>
+       <ul class="space-y-4">
+        <li class="flex items-start gap-3"><span class="text-red-600 font-bold text-lg flex-shrink-0">✖</span> <span class="text-gray-700">Quer só estudar teoria e resumos</span></li>
+        <li class="flex items-start gap-3"><span class="text-red-600 font-bold text-lg flex-shrink-0">✖</span> <span class="text-gray-700">Procura um "atalho" para passar sem treinar</span></li>
+        <li class="flex items-start gap-3"><span class="text-red-600 font-bold text-lg flex-shrink-0">✖</span> <span class="text-gray-700">Não quer investir tempo resolvendo questões</span></li>
+        <li class="flex items-start gap-3"><span class="text-red-600 font-bold text-lg flex-shrink-0">✖</span> <span class="text-gray-700">Não está comprometido com sua aprovação</span></li>
+        <li class="flex items-start gap-3"><span class="text-red-600 font-bold text-lg flex-shrink-0">✖</span> <span class="text-gray-700">Prefere estudar do jeito errado mesmo sabendo</span></li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </section><!-- 📊 MINI SIMULAÇÃO DE RESULTADO -->
+   <section class="bg-gradient-to-b from-roxo-claro to-white py-16 px-4 md:px-8">
+    <div class="max-w-5xl mx-auto">
+     <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-4">Qual é o seu método <span class="text-roxo">agora?</span></h2>
+     <p class="text-gray-600 text-center mb-12">Compare sua forma de estudar com a dos aprovados</p>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white rounded-2xl p-8 shadow-md card-hover">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center"><span class="text-xl">❌</span>
+        </div>
+        <h3 class="font-display font-bold text-xl">Aluno Comum</h3>
+       </div>
+       <div class="space-y-4 mb-8">
+        <div class="flex items-center gap-3">
+         <span class="text-2xl">📖</span>
+         <div>
+          <p class="font-semibold">Estuda teoria</p>
+          <p class="text-sm text-gray-500">2-3 horas por dia</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="text-2xl">✏️</span>
+         <div>
+          <p class="font-semibold">Resolve poucas questões</p>
+          <p class="text-sm text-gray-500">10-15 questões por semana</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="text-2xl">😶</span>
+         <div>
+          <p class="font-semibold">Resultado: Sem evolução</p>
+          <p class="text-sm text-gray-500">Nota estagnada ou caindo</p>
+         </div>
+        </div>
+       </div>
+       <div class="bg-red-50 rounded-xl p-4 border border-red-200 text-center">
+        <p class="text-red-700 font-semibold">❌ Resultado: Frustração</p>
+       </div>
+      </div>
+      <div class="bg-white rounded-2xl p-8 shadow-md card-hover border-2 border-verde-cta">
+       <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-verde-cta/20 rounded-full flex items-center justify-center"><span class="text-xl">✅</span>
+        </div>
+        <h3 class="font-display font-bold text-xl text-verde-cta">Aluno Estratégico</h3>
+       </div>
+       <div class="space-y-4 mb-8">
+        <div class="flex items-center gap-3">
+         <span class="text-2xl">🎯</span>
+         <div>
+          <p class="font-semibold">Foca no que cai</p>
+          <p class="text-sm text-gray-500">Teoria objetiva</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="text-2xl">⚡</span>
+         <div>
+          <p class="font-semibold">Resolve muitas questões</p>
+          <p class="text-sm text-gray-500">50-100 questões focadas por semana</p>
+         </div>
+        </div>
+        <div class="flex items-center gap-3">
+         <span class="text-2xl">📈</span>
+         <div>
+          <p class="font-semibold">Resultado: Evolução real</p>
+          <p class="text-sm text-gray-500">Nota subindo constantemente</p>
+         </div>
+        </div>
+       </div>
+       <div class="bg-green-50 rounded-xl p-4 border border-verde-cta">
+        <p class="text-verde-cta font-semibold">✅ Resultado: Aprovação</p>
+       </div>
+      </div>
+     </div>
+     <div class="bg-roxo rounded-2xl p-8 text-center text-white mt-12">
+      <p class="font-display text-2xl md:text-3xl font-bold mb-2">A diferença não é inteligência.</p>
+      <p class="text-xl">É <span class="text-amarelo font-bold">método</span> e <span class="text-amarelo font-bold">prática</span>.</p>
+     </div>
+    </div>
+   </section><!-- 🎁 SEÇÃO DE BÔNUS -->
+   <section class="bg-white py-16 px-4 md:px-8">
+    <div class="max-w-5xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Quando você adquirir o banco, recebe também:</h2>
+      <p class="text-gray-600">Bônus exclusivos para turbinar seu treino</p>
+     </div>
+     <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-gradient-to-br from-amarelo/10 to-amber-50 rounded-2xl p-8 border-2 border-amarelo card-hover">
+       <div class="flex items-start gap-4">
+        <div class="w-16 h-16 bg-amarelo rounded-2xl flex items-center justify-center flex-shrink-0"><span class="text-3xl">📋</span>
+        </div>
+        <div>
+         <h3 class="font-display font-bold text-xl mb-2" id="bonus-1">🎁 Bônus 1: Lista dos assuntos que mais caem no ENEM</h3>
+         <p class="text-gray-700">Uma lista organizada e atualizada dos assuntos que mais aparecem nas provas. Você sabe exatamente no que focar.</p>
+         <p class="text-sm text-gray-500 mt-3">💰 Valor normalmente: R$ 29,90</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-gradient-to-br from-roxo/10 to-purple-50 rounded-2xl p-8 border-2 border-roxo card-hover">
+       <div class="flex items-start gap-4">
+        <div class="w-16 h-16 bg-roxo rounded-2xl flex items-center justify-center flex-shrink-0"><span class="text-3xl">📅</span>
+        </div>
+        <div>
+         <h3 class="font-display font-bold text-xl mb-2" id="bonus-2">🎁 Bônus 2: Plano de treino semanal</h3>
+         <p class="text-gray-700">Um plano pronto para você seguir. Não precisa pensar no que estudar cada dia - já vem tudo organizado e sequenciado.</p>
+         <p class="text-sm text-gray-500 mt-3">💰 Valor normalmente: R$ 19,90</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="bg-roxo-escuro rounded-2xl p-8 text-center text-white mt-8">
+      <p class="text-lg font-semibold">Total de bônus: R$ 49,80</p>
+      <p class="text-verde-cta font-bold text-2xl mt-2">INCLUÍDOS GRATUITAMENTE COM SUA COMPRA!</p>
+     </div>
+    </div>
+   </section><!-- 🧠 SEÇÃO "QUANTO CUSTA NÃO COMPRAR?" -->
+   <section class="bg-cinza-claro py-16 px-4 md:px-8">
     <div class="max-w-4xl mx-auto">
-      <div class="bg-gradient-to-br from-roxo to-roxo-escuro rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-
-        <div class="relative z-10">
-          <span class="inline-block bg-amarelo text-preto-suave text-sm font-bold px-4 py-2 rounded-full mb-6"> 🔥 OFERTA ESPECIAL </span>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">Acesso vitalício ao Banco de Questões</h2>
-          <p class="text-white/80 mb-8 max-w-xl mx-auto">Pague uma vez, use para sempre. Atualizações inclusas.</p>
-
-          <div class="mb-8">
-            <p class="text-white/60 text-lg mb-2"><span class="line-through" id="old-price">De R$ 997</span></p>
-            <p class="text-5xl md:text-6xl font-bold text-white mb-2" id="new-price">R$ 59<span class="text-3xl">,99</span></p>
-            <p class="text-verde-cta font-semibold">🔓 Acesso vitalício • 💥 Economia de mais de 90%</p>
+     <div class="bg-white rounded-3xl p-8 md:p-12 shadow-lg border-l-4 border-red-500">
+      <h2 class="font-display text-2xl md:text-3xl font-bold mb-6">Quanto custa <span class="text-red-600">NÃO comprar?</span></h2>
+      <div class="space-y-4 mb-8">
+       <div class="flex items-start gap-4">
+        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-lg">❌</span>
+        </div>
+        <div>
+         <p class="font-semibold text-gray-800">Se você errar 10 questões na prova por falta de treino:</p>
+         <p class="text-lg text-red-600 font-bold mt-2">Pode custar sua vaga no curso dos seus sonhos</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4 mt-6">
+        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-lg">⚠️</span>
+        </div>
+        <div>
+         <p class="font-semibold text-gray-800">Enquanto você continua estudando só teoria:</p>
+         <p class="text-gray-700 mt-2">Seus concorrentes estão resolvendo 100+ questões por semana e evoluindo rapidamente</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4 mt-6">
+        <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0"><span class="text-lg">💔</span>
+        </div>
+        <div>
+         <p class="font-semibold text-gray-800">O preço da inação:</p>
+         <p class="text-gray-700 mt-2">Tentar de novo no próximo ano, gastar mais tempo e dinheiro, lidar com a frustração</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-green-50 rounded-xl p-6 border border-verde-cta text-center">
+       <p class="text-gray-700 mb-2">Por apenas <span class="font-bold text-lg">R$ 17,90</span></p>
+       <p class="font-bold text-verde-cta text-xl">Você tem acesso a centenas de questões que podem mudar sua história</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ⚪ 2ª DOBRA – A DOR -->
+   <section class="bg-cinza-claro py-20 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto">
+     <h2 class="font-display text-3xl md:text-4xl font-bold text-center mb-4">Por que a maioria dos vestibulandos <span class="text-roxo">não evolui?</span></h2>
+     <p class="text-gray-600 text-center mb-12 max-w-2xl mx-auto">São 3 erros que travam sua evolução e impedem você de passar</p>
+     <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white rounded-2xl p-8 card-hover border-2 border-transparent hover:border-roxo">
+       <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6"><span class="text-3xl">📖</span>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Estudam só teoria</h3>
+       <p class="text-gray-600">Passam horas lendo resumos e assistindo aulas, mas nunca testam o conhecimento na prática.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 card-hover border-2 border-transparent hover:border-roxo">
+       <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6"><span class="text-3xl">✏️</span>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Fazem pouco exercício</h3>
+       <p class="text-gray-600">Resolvem 10 questões e acham que já dominam o assunto. A prova cobra muito mais.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 card-hover border-2 border-transparent hover:border-roxo">
+       <div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6"><span class="text-3xl">⏱️</span>
+       </div>
+       <h3 class="font-display font-bold text-xl mb-3">Não treinam como prova</h3>
+       <p class="text-gray-600">Estudam sem pressão de tempo e sem simular o ambiente real do vestibular.</p>
+      </div>
+     </div>
+     <div class="bg-roxo-escuro rounded-3xl p-8 md:p-12 text-center">
+      <h3 class="font-display text-2xl md:text-3xl font-bold text-white mb-4">Vestibular não aprova quem estuda mais.</h3>
+      <p class="text-3xl md:text-4xl font-bold text-amarelo">Aprova quem resolve mais questões. 🎯</p>
+     </div>
+    </div>
+   </section><!-- CTA INTERMEDIÁRIO -->
+   <section class="gradient-hero py-12 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+     <p class="text-white text-xl mb-6">Pronto para mudar sua forma de estudar?</p><a href="#oferta" class="btn-cta inline-block text-white font-bold text-lg px-10 py-5 rounded-full"> QUERO COMEÇAR AGORA </a>
+    </div>
+   </section><!-- 🟣 3ª DOBRA – SOLUÇÃO -->
+   <section class="gradient-roxo py-20 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12"><span class="inline-block bg-amarelo text-preto-suave text-sm font-bold px-4 py-2 rounded-full mb-4"> ✨ A SOLUÇÃO </span>
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-white">Conheça o Banco de Questões Estratégico</h2>
+     </div>
+     <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1">
+       <div class="bg-white rounded-3xl p-4 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform">
+        <div class="bg-gradient-to-br from-roxo-claro to-white rounded-2xl p-6">
+         <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 bg-roxo rounded-lg flex items-center justify-center"><span class="text-white font-bold">BQ</span>
+          </div><span class="font-display font-bold">Banco de Questões</span>
+         </div>
+         <div class="space-y-4">
+          <div class="bg-white rounded-xl p-4 shadow-sm">
+           <div class="flex items-center justify-between mb-2"><span class="font-medium">Matemática - Funções</span> <span class="text-xs bg-verde-cta/20 text-verde-cta px-2 py-1 rounded">Nível 3</span>
+           </div>
+           <div class="h-2 bg-gray-100 rounded-full">
+            <div class="h-2 bg-roxo rounded-full" style="width: 75%"></div>
+           </div>
           </div>
+          <div class="bg-white rounded-xl p-4 shadow-sm">
+           <div class="flex items-center justify-between mb-2"><span class="font-medium">Português - Interpretação</span> <span class="text-xs bg-amarelo/50 text-preto-suave px-2 py-1 rounded">Nível 2</span>
+           </div>
+           <div class="h-2 bg-gray-100 rounded-full">
+            <div class="h-2 bg-roxo rounded-full" style="width: 60%"></div>
+           </div>
+          </div>
+          <div class="bg-white rounded-xl p-4 shadow-sm">
+           <div class="flex items-center justify-between mb-2"><span class="font-medium">Física - Cinemática</span> <span class="text-xs bg-roxo/20 text-roxo px-2 py-1 rounded">Nível 4</span>
+           </div>
+           <div class="h-2 bg-gray-100 rounded-full">
+            <div class="h-2 bg-roxo rounded-full" style="width: 85%"></div>
+           </div>
+          </div>
+         </div>
+         <div class="mt-6 flex items-center justify-between text-sm text-gray-500"><span>📊 680+ questões</span> <span>📈 Seu progresso: 45%</span>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="flex-1 space-y-6">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0"><span class="text-3xl">📚</span>
+        </div>
+        <div>
+         <h3 class="font-display font-bold text-xl text-white mb-2">Centenas de questões organizadas</h3>
+         <p class="text-white/80">Questões selecionadas de provas anteriores do ENEM e principais vestibulares.</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0"><span class="text-3xl">📊</span>
+        </div>
+        <div>
+         <h3 class="font-display font-bold text-xl text-white mb-2">Separadas por matéria</h3>
+         <p class="text-white/80">Encontre exatamente o que você precisa treinar de forma rápida e fácil.</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0"><span class="text-3xl">📈</span>
+        </div>
+        <div>
+         <h3 class="font-display font-bold text-xl text-white mb-2">Nível progressivo</h3>
+         <p class="text-white/80">Comece do básico e evolua até questões de alta complexidade.</p>
+        </div>
+       </div>
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0"><span class="text-3xl">📝</span>
+        </div>
+        <div>
+         <h3 class="font-display font-bold text-xl text-white mb-2">Gabarito estruturado</h3>
+         <p class="text-white/80">Entenda o passo a passo de cada resolução e aprenda com seus erros.</p>
+        </div>
+       </div><a href="#oferta" class="btn-cta inline-block text-white font-bold text-lg px-10 py-5 rounded-full mt-8"> QUERO TREINAR AGORA </a>
+      </div>
+     </div>
+    </div>
+   </section><!-- ⚪ 4ª DOBRA – O QUE VOCÊ RECEBE -->
+   <section class="bg-white py-20 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Tudo que você <span class="text-roxo">recebe</span></h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Material completo para você dominar qualquer vestibular</p>
+     </div>
+     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-cinza-claro rounded-2xl p-6 card-hover">
+       <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center mb-4"><span class="text-2xl">📚</span>
+       </div>
+       <h3 class="font-display font-bold text-lg mb-2">Banco completo</h3>
+       <p class="text-gray-600 text-sm">Acesso a todas as questões organizadas e atualizadas.</p>
+      </div>
+      <div class="bg-cinza-claro rounded-2xl p-6 card-hover">
+       <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center mb-4"><span class="text-2xl">🗂️</span>
+       </div>
+       <h3 class="font-display font-bold text-lg mb-2">Organização por tema</h3>
+       <p class="text-gray-600 text-sm">Encontre questões específicas do assunto que precisa treinar.</p>
+      </div>
+      <div class="bg-cinza-claro rounded-2xl p-6 card-hover">
+       <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center mb-4"><span class="text-2xl">🔄</span>
+       </div>
+       <h3 class="font-display font-bold text-lg mb-2">Atualizações futuras</h3>
+       <p class="text-gray-600 text-sm">Novas questões adicionadas regularmente sem custo extra.</p>
+      </div>
+      <div class="bg-cinza-claro rounded-2xl p-6 card-hover">
+       <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center mb-4"><span class="text-2xl">✅</span>
+       </div>
+       <h3 class="font-display font-bold text-lg mb-2">Gabaritos completos</h3>
+       <p class="text-gray-600 text-sm">Resolução detalhada de cada questão para você aprender.</p>
+      </div>
+      <div class="bg-cinza-claro rounded-2xl p-6 card-hover">
+       <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center mb-4"><span class="text-2xl">⚡</span>
+       </div>
+       <h3 class="font-display font-bold text-lg mb-2">Acesso imediato</h3>
+       <p class="text-gray-600 text-sm">Comece a treinar agora mesmo após a confirmação.</p>
+      </div>
+      <div class="bg-cinza-claro rounded-2xl p-6 card-hover">
+       <div class="w-12 h-12 bg-roxo rounded-xl flex items-center justify-center mb-4"><span class="text-2xl">📱</span>
+       </div>
+       <h3 class="font-display font-bold text-lg mb-2">Material leve e direto</h3>
+       <p class="text-gray-600 text-sm">Acesse de qualquer dispositivo, a qualquer hora.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- 🟣 5ª DOBRA – PROVA SOCIAL -->
+   <section class="gradient-roxo py-20 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">Quem usa, <span class="text-amarelo">aprova</span></h2>
+      <p class="text-white/80">Veja o que nossos alunos estão dizendo</p>
+     </div>
+     <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl p-6 card-hover">
+       <div class="flex items-center gap-1 mb-4"><span class="text-amarelo">⭐⭐⭐⭐⭐</span>
+       </div>
+       <p class="text-gray-700 mb-6">"Eu passava horas estudando teoria e não via resultado. Com o banco de questões, comecei a acertar muito mais nas provas. Recomendo demais!"</p>
+       <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-roxo-claro rounded-full flex items-center justify-center"><span class="text-xl">👩</span>
+        </div>
+        <div>
+         <p class="font-bold">Maria Silva</p>
+         <p class="text-sm text-gray-500">Aprovada em Medicina</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 card-hover">
+       <div class="flex items-center gap-1 mb-4"><span class="text-amarelo">⭐⭐⭐⭐⭐</span>
+       </div>
+       <p class="text-gray-700 mb-6">"O melhor investimento que fiz! As questões são muito bem organizadas e os gabaritos me ajudaram a entender onde eu errava."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-roxo-claro rounded-full flex items-center justify-center"><span class="text-xl">👨</span>
+        </div>
+        <div>
+         <p class="font-bold">João Pedro</p>
+         <p class="text-sm text-gray-500">Aprovado em Engenharia</p>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 card-hover">
+       <div class="flex items-center gap-1 mb-4"><span class="text-amarelo">⭐⭐⭐⭐⭐</span>
+       </div>
+       <p class="text-gray-700 mb-6">"Treinei com essas questões por 3 meses e minha nota no ENEM subiu 150 pontos! Vale cada centavo."</p>
+       <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-roxo-claro rounded-full flex items-center justify-center"><span class="text-xl">👩</span>
+        </div>
+        <div>
+         <p class="font-bold">Ana Clara</p>
+         <p class="text-sm text-gray-500">Aprovada em Direito</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- ⚪ 6ª DOBRA – OFERTA -->
+   <section id="oferta" class="bg-white py-20 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto">
+     <div class="bg-gradient-to-br from-roxo to-roxo-escuro rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+      <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+      <div class="relative z-10"><span class="inline-block bg-amarelo text-preto-suave text-sm font-bold px-4 py-2 rounded-full mb-6"> 🔥 OFERTA ESPECIAL </span>
+       <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">Acesso completo ao Banco de Questões</h2>
+       <p class="text-white/80 mb-8 max-w-xl mx-auto">Por um preço menor que um lanche, você garante acesso a centenas de questões que podem mudar o rumo do seu vestibular.</p>
+       <div class="mb-8">
+        <p class="text-white/60 text-lg mb-2"><span class="line-through" id="old-price">De R$ 47</span></p>
+        <p class="text-5xl md:text-6xl font-bold text-white mb-2" id="new-price">R$ 17<span class="text-3xl">,90</span></p>
+        <p class="text-verde-cta font-semibold">Economia de mais de 60%!</p>
+       </div><a href="#" class="btn-cta inline-block text-white font-bold text-xl px-12 py-6 rounded-full pulse-animation" id="cta-oferta"> QUERO APROVEITAR AGORA </a>
+       <div class="flex flex-wrap items-center justify-center gap-6 mt-8 text-white/80 text-sm"><span class="flex items-center gap-2"> <span>🔒</span> Pagamento seguro </span> <span class="flex items-center gap-2"> <span>⚡</span> Acesso imediato </span> <span class="flex items-center gap-2"> <span>✅</span> Garantia 7 dias </span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- 🟣 7ª DOBRA – GARANTIA -->
+   <section class="gradient-hero py-20 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto">
+     <div class="bg-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+      <div class="w-32 h-32 flex-shrink-0">
+       <div class="w-full h-full bg-verde-cta/20 rounded-full flex items-center justify-center"><span class="text-6xl">🛡️</span>
+       </div>
+      </div>
+      <div>
+       <h2 class="font-display text-2xl md:text-3xl font-bold mb-4">Garantia incondicional de <span class="text-verde-cta">7 dias</span></h2>
+       <p class="text-gray-600 text-lg">Você tem 7 dias para testar o Banco de Questões. Se por qualquer motivo você não gostar, basta enviar um e-mail e devolvemos <strong>100% do seu dinheiro</strong>. Sem perguntas, sem burocracia.</p>
+       <p class="text-roxo font-semibold mt-4">O risco é todo nosso. A aprovação pode ser sua.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- ⚪ 8ª DOBRA – FAQ -->
+   <section class="bg-cinza-claro py-20 px-4 md:px-8">
+    <div class="max-w-3xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-4">Perguntas <span class="text-roxo">frequentes</span></h2>
+     </div>
+     <div class="space-y-4">
+      <div class="faq-item bg-white rounded-xl overflow-hidden"><button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display font-semibold text-lg">Para quem é o Banco de Questões?</span> <span class="faq-icon text-roxo text-2xl">▼</span> </button>
+       <div class="faq-content px-6 pb-6">
+        <p class="text-gray-600">Para qualquer vestibulando que quer treinar com questões reais de ENEM e vestibulares. Ideal para quem quer parar de só estudar teoria e começar a praticar de verdade.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-white rounded-xl overflow-hidden"><button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display font-semibold text-lg">O acesso é vitalício?</span> <span class="faq-icon text-roxo text-2xl">▼</span> </button>
+       <div class="faq-content px-6 pb-6">
+        <p class="text-gray-600">Sim! Você paga uma vez e tem acesso para sempre, incluindo todas as atualizações futuras de novas questões.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-white rounded-xl overflow-hidden"><button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display font-semibold text-lg">Como recebo o acesso?</span> <span class="faq-icon text-roxo text-2xl">▼</span> </button>
+       <div class="faq-content px-6 pb-6">
+        <p class="text-gray-600">Imediatamente após a confirmação do pagamento, você recebe os dados de acesso no seu e-mail. É instantâneo!</p>
+       </div>
+      </div>
+      <div class="faq-item bg-white rounded-xl overflow-hidden"><button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display font-semibold text-lg">Posso acessar pelo celular?</span> <span class="faq-icon text-roxo text-2xl">▼</span> </button>
+       <div class="faq-content px-6 pb-6">
+        <p class="text-gray-600">Sim! O material é 100% responsivo e funciona perfeitamente em celulares, tablets e computadores.</p>
+       </div>
+      </div>
+      <div class="faq-item bg-white rounded-xl overflow-hidden"><button class="faq-trigger w-full flex items-center justify-between p-6 text-left" onclick="toggleFaq(this)"> <span class="font-display font-semibold text-lg">E se eu não gostar?</span> <span class="faq-icon text-roxo text-2xl">▼</span> </button>
+       <div class="faq-content px-6 pb-6">
+        <p class="text-gray-600">Você tem 7 dias de garantia incondicional. Se não gostar por qualquer motivo, devolvemos 100% do seu dinheiro. Sem perguntas.</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- 🟣 9ª DOBRA – CTA FINAL -->
+   <section class="gradient-hero py-20 px-4 md:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">A diferença entre você e sua aprovação<br><span class="text-amarelo">pode ser treino.</span></h2>
+     <p class="text-white/80 text-xl mb-8 max-w-2xl mx-auto">Pare de estudar errado. Comece a treinar como os aprovados.</p><a href="#oferta" class="btn-cta inline-block text-white font-bold text-xl px-12 py-6 rounded-full pulse-animation" id="cta-final"> QUERO COMEÇAR AGORA </a>
+     <p class="text-white/60 text-sm mt-6">🔒 Pagamento 100% seguro | ⚡ Acesso imediato | ✅ Garantia 7 dias</p>
+    </div>
+   </section><!-- FOOTER -->
+   <footer class="bg-preto-suave py-8 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+     <p class="text-gray-500 text-sm">© 2026 Banco de Questões Estratégico. Todos os direitos reservados.</p>
+     <p class="text-gray-600 text-xs mt-4">Plataforma educacional independente. Não afiliada ao INEP, ENEM ou órgãos governamentais.</p>
+     <p class="text-gray-600 text-xs mt-2">Resultados variam conforme dedicação individual. Ao utilizar a plataforma, você concorda com nossos Termos de Uso e Política de Privacidade.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Default configuration
+    const defaultConfig = {
+      headline: 'Você não precisa estudar mais. Precisa resolver as questões certas.',
+      subheadline: 'Banco de questões focado no que mais cai no ENEM e vestibulares.',
+      cta_text: 'QUERO COMEÇAR AGORA',
+      old_price: 'De R$ 997',
+      new_price: 'R$ 59,99',
+      urgency_text: 'Oferta de lançamento termina em: ',
+      bonus_1: '🎁 Bônus 1: Lista dos assuntos que mais caem no ENEM',
+      bonus_2: '🎁 Bônus 2: Plano de treino semanal',
+      background_color: '#6C2BD9',
+      surface_color: '#FFFFFF',
+      text_color: '#111111',
+      primary_action_color: '#22C55E',
+      secondary_action_color: '#4C1D95'
+    };
 
-          <a href="#" class="btn-cta inline-block text-white font-bold text-xl px-12 py-6 rounded-full pulse-animation" id="cta-oferta">QUERO GARANTIR MEU ACESSO</a>
+    // Mensagens de notificação
+    const notificationMessages = [
+      { emoji: '🔥', text: 'Novo aluno garantiu acesso vitalício', detail: 'Mariana S. aproveitou por R$ 59,90', location: 'Campinas/SP' },
+      { emoji: '✅', text: 'Compra confirmada', detail: 'Lucas M. acaba de comprar', location: 'São Paulo/SP' },
+      { emoji: '⚡', text: 'Acesso liberado', detail: 'Ana P. começou a treinar agora', location: 'Rio de Janeiro/RJ' },
+      { emoji: '🎯', text: 'Aluno em treino intensivo', detail: 'João S. resolveu 50 questões', location: 'Belo Horizonte/MG' }
+    ];
 
-          <div class="flex flex-wrap items-center justify-center gap-6 mt-8 text-white/80 text-sm">
-            <span class="flex items-center gap-2"><span>🔒</span> Pagamento seguro</span>
-            <span class="flex items-center gap-2"><span>⚡</span> Acesso imediato</span>
-            <span class="flex items-center gap-2"><span>✅</span> Garantia 7 dias</span>
+    let notificationIndex = 0;
+    let currentNotification = null;
+
+    function createNotification() {
+      const msg = notificationMessages[notificationIndex % notificationMessages.length];
+      
+      const notification = document.createElement('div');
+      notification.className = 'popup-notification';
+      notification.innerHTML = `
+        <button class="popup-close" onclick="closeNotification()">×</button>
+        <div style="display: flex; gap: 12px;">
+          <span style="font-size: 20px; flex-shrink: 0;">${msg.emoji}</span>
+          <div style="flex: 1; min-width: 0;">
+            <p style="margin: 0; font-weight: 600; font-size: 14px; color: #111;">${msg.text}</p>
+            <p style="margin: 4px 0 0 0; font-size: 12px; color: #666;">${msg.detail}</p>
+            <p style="margin: 4px 0 0 0; font-size: 11px; color: #999;">há 1 min • ${msg.location}</p>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+      `;
+      
+      document.body.appendChild(notification);
+      currentNotification = notification;
+      notificationIndex++;
+      
+      // Auto-remove após 6 segundos
+      setTimeout(() => {
+        if (currentNotification === notification) {
+          closeNotification();
+        }
+      }, 6000);
+    }
 
-  <!-- FOOTER -->
-  <footer class="bg-preto-suave py-8 px-4">
-    <div class="max-w-6xl mx-auto text-center">
-      <p class="text-gray-500 text-sm">© 2026 Banco de Questões Estratégico. Todos os direitos reservados.</p>
-      <p class="text-gray-600 text-xs mt-4">Plataforma educacional independente. Não afiliada ao INEP, ENEM ou órgãos governamentais.</p>
-      <p class="text-gray-600 text-xs mt-2">Resultados variam conforme dedicação individual. Ao utilizar a plataforma, você concorda com nossos Termos de Uso e Política de Privacidade.</p>
-    </div>
-  </footer>
-
-</div>
-
-<script>
-  // FAQ
-  function toggleFaq(button) {
-    const faqItem = button.parentElement;
-    const isActive = faqItem.classList.contains('active');
-    document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-    if (!isActive) faqItem.classList.add('active');
-  }
-
-  // Countdown (igual ao seu)
-  function startCountdown() {
-    const countdownEl = document.getElementById('countdown');
-    if (!countdownEl) return;
-    let timeRemaining = 14 * 3600 + 37 * 60 + 52;
-
-    function updateCountdown() {
-      const hours = Math.floor(timeRemaining / 3600);
-      const minutes = Math.floor((timeRemaining % 3600) / 60);
-      const seconds = timeRemaining % 60;
-      countdownEl.textContent = `${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-
-      if (timeRemaining > 0) {
-        timeRemaining--;
-        setTimeout(updateCountdown, 1000);
-      } else {
-        document.getElementById('urgency-bar').innerHTML =
-          '<div class="max-w-6xl mx-auto text-center"><span class="font-bold">⏰ Esta oferta especial expirou</span></div>';
+    function closeNotification() {
+      if (currentNotification) {
+        currentNotification.classList.add('exit');
+        setTimeout(() => {
+          if (currentNotification && currentNotification.parentNode) {
+            currentNotification.parentNode.removeChild(currentNotification);
+          }
+          currentNotification = null;
+          // Schedule next notification
+          setTimeout(createNotification, 1000 + Math.random() * 14000); // 1-15 segundos
+        }, 400);
       }
     }
-    updateCountdown();
-  }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startCountdown);
-  } else {
-    startCountdown();
-  }
+    // Iniciar notificações após 20 segundos
+    setTimeout(() => {
+      createNotification();
+    }, 20000);
 
-  // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // FAQ Toggle Function
+    function toggleFaq(button) {
+      const faqItem = button.parentElement;
+      const isActive = faqItem.classList.contains('active');
+      
+      // Close all other FAQ items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Toggle current item
+      if (!isActive) {
+        faqItem.classList.add('active');
+      }
+    }
+
+    // Countdown Timer
+    function startCountdown() {
+      const countdownEl = document.getElementById('countdown');
+      if (!countdownEl) return;
+
+      let timeRemaining = 14 * 3600 + 37 * 60 + 52; // 14:37:52
+
+      function updateCountdown() {
+        const hours = Math.floor(timeRemaining / 3600);
+        const minutes = Math.floor((timeRemaining % 3600) / 60);
+        const seconds = timeRemaining % 60;
+
+        const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        countdownEl.textContent = formattedTime;
+
+        if (timeRemaining > 0) {
+          timeRemaining--;
+          setTimeout(updateCountdown, 1000);
+        } else {
+          document.getElementById('urgency-bar').innerHTML = '<div class="max-w-6xl mx-auto text-center"><span class="font-bold">⏰ Esta oferta especial expirou</span></div>';
+        }
+      }
+
+      updateCountdown();
+    }
+
+    // Start countdown when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startCountdown);
+    } else {
+      startCountdown();
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
     });
-  });
 
-  // POP-UP (profissional e não invasivo)
-  // ✅ 1º após 20s
-  // ✅ depois a cada 75–90s (random)
-  // ✅ 1 por vez, 6s, com X
-  const notificationMessages = [
-    { emoji: '🔥', title: 'Atividade recente', detail: 'Novo aluno iniciou o treino agora', location: 'São Paulo/SP' },
-    { emoji: '⚡', title: 'Movimento na plataforma', detail: 'Sessões de estudo em andamento', location: 'Rio de Janeiro/RJ' },
-    { emoji: '🎯', title: 'Foco total', detail: 'Alunos avançando em questões hoje', location: 'Belo Horizonte/MG' },
-  ];
+    // Element SDK initialization
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          // Update headline
+          const headlineEl = document.getElementById('headline');
+          if (headlineEl) {
+            const headlineText = config.headline || defaultConfig.headline;
+            const parts = headlineText.split('.');
+            if (parts.length >= 2) {
+              headlineEl.innerHTML = `${parts[0]}.<br><span class="text-amarelo">${parts.slice(1).join('.').trim()}</span>`;
+            } else {
+              headlineEl.textContent = headlineText;
+            }
+          }
 
-  let notificationIndex = 0;
-  let currentNotification = null;
-  let nextTimer = null;
+          // Update subheadline
+          const subheadlineEl = document.getElementById('subheadline');
+          if (subheadlineEl) {
+            subheadlineEl.textContent = config.subheadline || defaultConfig.subheadline;
+          }
 
-  function scheduleNext() {
-    const delay = 75000 + Math.random() * 15000; // 75–90s
-    clearTimeout(nextTimer);
-    nextTimer = setTimeout(createNotification, delay);
-  }
+          // Update CTA buttons
+          const ctaText = config.cta_text || defaultConfig.cta_text;
+          document.querySelectorAll('#cta-hero, #cta-oferta, #cta-final').forEach(btn => {
+            btn.textContent = ctaText;
+          });
 
-  function closeNotification() {
-    if (!currentNotification) return;
-    currentNotification.classList.add('exit');
-    setTimeout(() => {
-      currentNotification?.remove();
-      currentNotification = null;
-      scheduleNext();
-    }, 400);
-  }
+          // Update prices
+          const oldPriceEl = document.getElementById('old-price');
+          if (oldPriceEl) {
+            oldPriceEl.textContent = config.old_price || defaultConfig.old_price;
+          }
 
-  function createNotification() {
-    if (currentNotification) return;
+          const newPriceEl = document.getElementById('new-price');
+          if (newPriceEl) {
+            const priceText = config.new_price || defaultConfig.new_price;
+            const priceParts = priceText.split(',');
+            if (priceParts.length === 2) {
+              newPriceEl.innerHTML = `${priceParts[0]}<span class="text-3xl">,${priceParts[1]}</span>`;
+            } else {
+              newPriceEl.textContent = priceText;
+            }
+          }
 
-    const msg = notificationMessages[notificationIndex % notificationMessages.length];
-    const notification = document.createElement('div');
-    notification.className = 'popup-notification';
-    notification.innerHTML = `
-      <button class="popup-close" aria-label="Fechar">×</button>
-      <div style="display:flex; gap:12px;">
-        <span style="font-size:20px; flex-shrink:0;">${msg.emoji}</span>
-        <div style="flex:1; min-width:0;">
-          <p style="margin:0; font-weight:700; font-size:14px; color:#111;">${msg.title}</p>
-          <p style="margin:4px 0 0 0; font-size:12px; color:#666;">${msg.detail}</p>
-          <p style="margin:4px 0 0 0; font-size:11px; color:#999;">há 1 min • ${msg.location}</p>
-        </div>
-      </div>
-    `;
-    notification.querySelector('.popup-close').addEventListener('click', closeNotification);
+          // Update urgency text
+          const urgencyEl = document.getElementById('urgency-text');
+          if (urgencyEl) {
+            urgencyEl.textContent = config.urgency_text || defaultConfig.urgency_text;
+          }
 
-    document.body.appendChild(notification);
-    currentNotification = notification;
-    notificationIndex++;
+          // Update bonus 1
+          const bonus1El = document.getElementById('bonus-1');
+          if (bonus1El) {
+            bonus1El.textContent = config.bonus_1 || defaultConfig.bonus_1;
+          }
 
-    setTimeout(() => {
-      if (currentNotification === notification) closeNotification();
-    }, 6000);
-  }
+          // Update bonus 2
+          const bonus2El = document.getElementById('bonus-2');
+          if (bonus2El) {
+            bonus2El.textContent = config.bonus_2 || defaultConfig.bonus_2;
+          }
 
-  setTimeout(createNotification, 20000);
-</script>
+          // Apply colors
+          const bgColor = config.background_color || defaultConfig.background_color;
+          const surfaceColor = config.surface_color || defaultConfig.surface_color;
+          const textColor = config.text_color || defaultConfig.text_color;
+          const primaryAction = config.primary_action_color || defaultConfig.primary_action_color;
+          const secondaryAction = config.secondary_action_color || defaultConfig.secondary_action_color;
 
-</body>
+          document.documentElement.style.setProperty('--roxo', bgColor);
+          document.documentElement.style.setProperty('--verde-cta', primaryAction);
+          document.documentElement.style.setProperty('--roxo-escuro', secondaryAction);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['headline', config.headline || defaultConfig.headline],
+          ['subheadline', config.subheadline || defaultConfig.subheadline],
+          ['cta_text', config.cta_text || defaultConfig.cta_text],
+          ['old_price', config.old_price || defaultConfig.old_price],
+          ['new_price', config.new_price || defaultConfig.new_price],
+          ['urgency_text', config.urgency_text || defaultConfig.urgency_text],
+          ['bonus_1', config.bonus_1 || defaultConfig.bonus_1],
+          ['bonus_2', config.bonus_2 || defaultConfig.bonus_2]
+        ])
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d560576561be2a1',t:'MTc3MjM0NTY2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
