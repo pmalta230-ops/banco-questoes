@@ -261,94 +261,48 @@
      <div class="mt-12 text-center"><a href="#oferta" class="btn-cta inline-block text-white font-bold text-lg px-10 py-5 rounded-full"> COMEÇAR AGORA </a>
      </div>
     </div>
-   <script>
-  // ===== 📊 DASHBOARD DE AUTORIDADE (auto incremento a cada 30s) =====
-  function parseNumberFromEl(el) {
-    if (!el) return 0;
-    const raw = (el.textContent || "").replace(/\./g, "").replace(/\+/g, "").trim();
-    const n = parseInt(raw, 10);
-    return Number.isFinite(n) ? n : 0;
-  }
-
-  function formatPtBR(n) {
-    return n.toLocaleString('pt-BR');
-  }
-
-  function updateDashboardNumbers() {
-    const viewersEl = document.getElementById('viewers-count');
-    const purchasesEl = document.getElementById('purchases-count');
-    const questionsEl = document.getElementById('questions-count');
-    const approvedEl = document.getElementById('total-approved');
-
-    if (!viewersEl || !purchasesEl || !questionsEl || !approvedEl) return;
-
-    // Pega valores atuais
-    let viewers = parseNumberFromEl(viewersEl);
-    let purchases = parseNumberFromEl(purchasesEl);
-    let questions = parseNumberFromEl(questionsEl);
-    let approved = parseNumberFromEl(approvedEl);
-
-    // Incrementos (ajuste aqui se quiser mais forte/fraco)
-    viewers += Math.floor(Math.random() * 4) + 1; // +1 a +4
-
-    // Compras sobem de vez em quando (pra ficar mais realista)
-    if (Math.random() < 0.35) purchases += 1; // 35% chance
-
-    questions += Math.floor(Math.random() * 31) + 10; // +10 a +40
-    if (Math.random() < 0.25) approved += Math.floor(Math.random() * 2) + 1; // 25% chance +1 ou +2
-
-    // Limites opcionais (evitar ficar absurdo em pouco tempo)
-    viewers = Math.min(viewers, 999);
-    purchases = Math.min(purchases, 999);
-    questions = Math.min(questions, 9999);
-    approved = Math.min(approved, 999999);
-
-    // Atualiza a tela
-    viewersEl.textContent = String(viewers);
-    purchasesEl.textContent = String(purchases);
-    questionsEl.textContent = `${formatPtBR(questions)}+`;
-    approvedEl.textContent = `${formatPtBR(approved)}+`;
-
-    // Salva no navegador (mantém após reload)
-    localStorage.setItem('dash_viewers', String(viewers));
-    localStorage.setItem('dash_purchases', String(purchases));
-    localStorage.setItem('dash_questions', String(questions));
-    localStorage.setItem('dash_approved', String(approved));
-  }
-
-  function loadDashboardNumbers() {
-    const viewersEl = document.getElementById('viewers-count');
-    const purchasesEl = document.getElementById('purchases-count');
-    const questionsEl = document.getElementById('questions-count');
-    const approvedEl = document.getElementById('total-approved');
-
-    if (!viewersEl || !purchasesEl || !questionsEl || !approvedEl) return;
-
-    const v = localStorage.getItem('dash_viewers');
-    const p = localStorage.getItem('dash_purchases');
-    const q = localStorage.getItem('dash_questions');
-    const a = localStorage.getItem('dash_approved');
-
-    if (v) viewersEl.textContent = v;
-    if (p) purchasesEl.textContent = p;
-    if (q) questionsEl.textContent = `${formatPtBR(parseInt(q, 10))}+`;
-    if (a) approvedEl.textContent = `${formatPtBR(parseInt(a, 10))}+`;
-  }
-
-  function startDashboardAutoIncrement() {
-    loadDashboardNumbers();
-    // roda logo ao carregar
-    updateDashboardNumbers();
-    // depois a cada 30s
-    setInterval(updateDashboardNumbers, 30000);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startDashboardAutoIncrement);
-  } else {
-    startDashboardAutoIncrement();
-  }
-</script>
+   </section><!-- 📊 DASHBOARD DE AUTORIDADE - MOVIMENTO AGORA -->
+   <section class="bg-cinza-claro py-16 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-4xl font-bold mb-2">🔥 Isso está acontecendo agora</h2>
+      <p class="text-gray-600 text-lg">Centenas de alunos já estão treinando e evoluindo. Você quer ficar para trás?</p>
+     </div>
+     <div class="grid md:grid-cols-4 gap-6 mb-8"><!-- Card 1: Vendo Agora -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-l-4 border-roxo">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">👁️</span>
+       </div>
+       <p class="text-gray-600 text-sm mb-2">Vendo agora</p>
+       <p class="font-display font-bold text-3xl text-roxo mb-1" id="viewers-count">37</p>
+       <p class="text-gray-500 text-xs">pessoas online</p>
+      </div><!-- Card 2: Compraram -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-l-4 border-verde-cta">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">🛒</span>
+       </div>
+       <p class="text-gray-600 text-sm mb-2">Compraram</p>
+       <p class="font-display font-bold text-3xl text-verde-cta mb-1" id="purchases-count">16</p>
+       <p class="text-gray-500 text-xs">esta semana</p>
+      </div><!-- Card 3: Treinando -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg card-hover border-l-4 border-amarelo">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">⚡</span>
+       </div>
+       <p class="text-gray-600 text-sm mb-2">Treinando</p>
+       <p class="font-display font-bold text-3xl text-amarelo mb-1" id="questions-count">1302+</p>
+       <p class="text-gray-500 text-xs">questões/dia</p>
+      </div><!-- Card 4: Total (Destaque) -->
+      <div class="bg-roxo rounded-2xl p-6 shadow-lg text-white border-l-4 border-amarelo">
+       <div class="flex items-center justify-between mb-4"><span class="text-3xl">🎓</span>
+       </div>
+       <p class="text-white/80 text-sm mb-2">Aprovados</p>
+       <p class="font-display font-bold text-3xl mb-1" id="total-approved">1.595+</p>
+       <p class="text-white/60 text-xs">nossos alunos</p>
+      </div>
+     </div><!-- Lista de Atividade -->
+     <div class="bg-white rounded-2xl p-8 shadow-md">
+      <h3 class="font-display font-bold text-lg mb-6">Atividade em tempo real</h3>
+      <div class="space-y-4" id="activity-list">
+       <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div>
          <p class="font-semibold text-gray-800">Camila R. — Comprou acesso hoje</p>
          <p class="text-sm text-gray-500">Novo aluno garantiu sua aprovação</p>
         </div><span class="text-xs text-gray-400">agora</span>
@@ -882,7 +836,7 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
       
       const notification = document.createElement('div');
       notification.className = 'popup-notification';
-      notification.innerHTML = `
+      notification.innerHTML = 
         <button class="popup-close" onclick="closeNotification()">×</button>
         <div style="display: flex; gap: 12px;">
           <span style="font-size: 20px; flex-shrink: 0;">${msg.emoji}</span>
@@ -892,7 +846,7 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
             <p style="margin: 4px 0 0 0; font-size: 11px; color: #999;">há 1 min • ${msg.location}</p>
           </div>
         </div>
-      `;
+      ;
       
       document.body.appendChild(notification);
       currentNotification = notification;
@@ -953,7 +907,7 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
         const minutes = Math.floor((timeRemaining % 3600) / 60);
         const seconds = timeRemaining % 60;
 
-        const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        const formattedTime = ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')};
         countdownEl.textContent = formattedTime;
 
         if (timeRemaining > 0) {
@@ -999,7 +953,7 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
             const headlineText = config.headline || defaultConfig.headline;
             const parts = headlineText.split('.');
             if (parts.length >= 2) {
-              headlineEl.innerHTML = `${parts[0]}.<br><span class="text-amarelo">${parts.slice(1).join('.').trim()}</span>`;
+              headlineEl.innerHTML = ${parts[0]}.<br><span class="text-amarelo">${parts.slice(1).join('.').trim()}</span>;
             } else {
               headlineEl.textContent = headlineText;
             }
@@ -1028,7 +982,7 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
             const priceText = config.new_price || defaultConfig.new_price;
             const priceParts = priceText.split(',');
             if (priceParts.length === 2) {
-              newPriceEl.innerHTML = `${priceParts[0]}<span class="text-3xl">,${priceParts[1]}</span>`;
+              newPriceEl.innerHTML = ${priceParts[0]}<span class="text-3xl">,${priceParts[1]}</span>;
             } else {
               newPriceEl.textContent = priceText;
             }
@@ -1121,7 +1075,6 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d56240d9298e2a1',t:'MTc3MjM0NjkxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
-
 
 
 
