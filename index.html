@@ -881,30 +881,52 @@ Nosso foco não é vender tempo de acesso, mas entregar um conteúdo direto ao p
     }
 
     // Countdown Timer
-    function startCountdown() {
-      const countdownEl = document.getElementById('countdown');
-      if (!countdownEl) return;
+    <script>
+  // Countdown Timer (corrigido)
+  function startCountdown() {
+    const countdownEl = document.getElementById('countdown');
+    const barEl = document.getElementById('urgency-bar');
+    if (!countdownEl) return;
 
-      let timeRemaining = 14 * 3600 + 37 * 60 + 52; // 14:37:52
-
-      function updateCountdown() {
-        const hours = Math.floor(timeRemaining / 3600);
-        const minutes = Math.floor((timeRemaining % 3600) / 60);
-        const seconds = timeRemaining % 60;
-
-        const formattedTime = ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')};
-        countdownEl.textContent = formattedTime;
-
-        if (timeRemaining > 0) {
-          timeRemaining--;
-          setTimeout(updateCountdown, 1000);
-        } else {
-          document.getElementById('urgency-bar').innerHTML = '<div class="max-w-6xl mx-auto text-center"><span class="font-bold">⏰ Esta oferta especial expirou</span></div>';
-        }
-      }
-
-      updateCountdown();
+    // pega o valor inicial que já está no HTML (ex: "14:37:52")
+    function parseTime(text) {
+      const m = String(text || "").trim().match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
+      if (!m) return 14 * 3600 + 37 * 60 + 52; // fallback
+      const h = parseInt(m[1], 10);
+      const min = parseInt(m[2], 10);
+      const s = parseInt(m[3], 10);
+      return h * 3600 + min * 60 + s;
     }
+
+    let timeRemaining = parseTime(countdownEl.textContent);
+
+    function fmt(n) { return String(n).padStart(2, '0'); }
+
+    function updateCountdown() {
+      const hours = Math.floor(timeRemaining / 3600);
+      const minutes = Math.floor((timeRemaining % 3600) / 60);
+      const seconds = timeRemaining % 60;
+
+      countdownEl.textContent = `${fmt(hours)}:${fmt(minutes)}:${fmt(seconds)}`;
+
+      if (timeRemaining > 0) {
+        timeRemaining--;
+        setTimeout(updateCountdown, 1000);
+      } else if (barEl) {
+        barEl.innerHTML =
+          '<div class="max-w-6xl mx-auto text-center"><span class="font-bold">⏰ Esta oferta especial expirou</span></div>';
+      }
+    }
+
+    updateCountdown();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startCountdown);
+  } else {
+    startCountdown();
+  }
+</script>
 
     // Start countdown when page loads
     if (document.readyState === 'loading') {
@@ -1480,6 +1502,7 @@ document.addEventListener("DOMContentLoaded", () => {
  </body></body>
 
 </html>
+
 
 
 
