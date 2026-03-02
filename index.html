@@ -1388,9 +1388,46 @@ document.addEventListener("DOMContentLoaded", () => {
     startCountdown();
   }
 </script>
+ <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const target = document.querySelector("#oferta");
+    if (!target) return;
+
+    // Ajuste aqui se você tem barra fixa no topo (urgency bar)
+    const TOP_OFFSET = 90; // px
+
+    function smoothScrollTo(el) {
+      const y = el.getBoundingClientRect().top + window.pageYOffset - TOP_OFFSET;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+
+    // Pega TODOS os botões que são CTA (melhor do que depender de href)
+    const ctas = document.querySelectorAll("#cta-hero, #cta-oferta, #cta-final, a, button");
+
+    ctas.forEach((el) => {
+      const text = (el.textContent || "").trim().toLowerCase();
+
+      const isCtaText =
+        text.includes("quero começar agora") ||
+        text.includes("quero aproveitar agora") ||
+        text.includes("quero treinar agora");
+
+      if (!isCtaText) return;
+
+      el.style.cursor = "pointer";
+
+      el.addEventListener("click", (e) => {
+        // evita seguir link (caso seja <a href="...">)
+        e.preventDefault();
+        smoothScrollTo(target);
+      });
+    });
+  });
+</script>
  </body></body>
 
 </html>
+
 
 
 
