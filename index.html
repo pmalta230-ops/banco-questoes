@@ -1304,9 +1304,183 @@ document.addEventListener("DOMContentLoaded", () => {
     startDashboard();
   }
 </script>
+ <script>
+  // =========================
+  // POPUP DE COMPRA (alternando pessoas)
+  // =========================
+  (function () {
+    const people = [
+      { name: "Camila R.", city: "Campinas/SP" },
+      { name: "João P.", city: "São Paulo/SP" },
+      { name: "Marina S.", city: "Belo Horizonte/MG" },
+      { name: "Lucas M.", city: "Rio de Janeiro/RJ" },
+      { name: "Ana C.", city: "Curitiba/PR" },
+      { name: "Pedro H.", city: "Salvador/BA" },
+      { name: "Juliana F.", city: "Fortaleza/CE" },
+      { name: "Rafael G.", city: "Brasília/DF" }
+    ];
+
+    const actions = [
+      { emoji: "✅", text: "acabou de efetuar a compra" },
+      { emoji: "🔥", text: "garantiu o acesso agora" },
+      { emoji: "⚡", text: "comprou e já começou a treinar" },
+      { emoji: "🎯", text: "finalizou a compra com sucesso" }
+    ];
+
+    // Ajustes rápidos (agressividade)
+    const START_AFTER_MS = 9000;        // começa depois de 9s
+    const SHOW_FOR_MS = 5500;           // fica na tela por 5.5s
+    const NEXT_MIN_MS = 6000;           // próximo popup mínimo 6s
+    const NEXT_MAX_MS = 14000;          // próximo popup máximo 14s
+
+    let current = null;
+
+    function ensureStyles() {
+      if (document.getElementById("purchase-popup-styles")) return;
+
+      const style = document.createElement("style");
+      style.id = "purchase-popup-styles";
+      style.textContent = `
+        .purchase-popup {
+          position: fixed;
+          right: 18px;
+          bottom: 18px;
+          z-index: 9999;
+          background: #fff;
+          border-radius: 14px;
+          box-shadow: 0 14px 50px rgba(0,0,0,.18);
+          padding: 14px 14px 12px 14px;
+          width: min(340px, calc(100vw - 36px));
+          border: 1px solid rgba(0,0,0,.06);
+          animation: popupIn .35s ease forwards;
+          font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }
+        @keyframes popupIn {
+          from { opacity: 0; transform: translateX(420px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        .purchase-popup.exit { animation: popupOut .35s ease forwards; }
+        @keyframes popupOut {
+          from { opacity: 1; transform: translateX(0); }
+          to   { opacity: 0; transform: translateX(420px); }
+        }
+        .purchase-popup .close {
+          position:absolute;
+          top:8px;
+          right:10px;
+          width:28px;
+          height:28px;
+          border:0;
+          background:transparent;
+          cursor:pointer;
+          color:#999;
+          font-size:18px;
+          line-height:28px;
+        }
+        .purchase-popup .close:hover { color:#333; }
+        .purchase-popup .row { display:flex; gap:12px; align-items:flex-start; }
+        .purchase-popup .emoji {
+          font-size:20px;
+          width:28px;
+          height:28px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          background: rgba(34,197,94,.12);
+          border-radius: 10px;
+          flex: 0 0 auto;
+        }
+        .purchase-popup .title {
+          margin:0;
+          font-weight:700;
+          font-size:14px;
+          color:#111;
+        }
+        .purchase-popup .detail {
+          margin:4px 0 0 0;
+          font-size:12px;
+          color:#666;
+        }
+        .purchase-popup .meta {
+          margin:6px 0 0 0;
+          font-size:11px;
+          color:#999;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function randomTimeLabel() {
+      const options = ["agora", "há 1 min", "há 2 min", "há poucos segundos"];
+      return pick(options);
+    }
+
+    function closePopup() {
+      if (!current) return;
+      const el = current;
+      current = null;
+      el.classList.add("exit");
+      setTimeout(() => {
+        if (el.parentNode) el.parentNode.removeChild(el);
+      }, 360);
+    }
+
+    function scheduleNext() {
+      const next = NEXT_MIN_MS + Math.random() * (NEXT_MAX_MS - NEXT_MIN_MS);
+      setTimeout(showPopup, next);
+    }
+
+    function showPopup() {
+      ensureStyles();
+      closePopup();
+
+      const person = pick(people);
+      const action = pick(actions);
+
+      const popup = document.createElement("div");
+      popup.className = "purchase-popup";
+      popup.innerHTML = `
+        <button class="close" type="button" aria-label="Fechar">×</button>
+        <div class="row">
+          <div class="emoji">${action.emoji}</div>
+          <div style="min-width:0;">
+            <p class="title">${person.name} ${action.text}</p>
+            <p class="detail">Acesso liberado para começar a treinar</p>
+            <p class="meta">${randomTimeLabel()} • ${person.city}</p>
+          </div>
+        </div>
+      `;
+
+      popup.querySelector(".close").addEventListener("click", () => {
+        closePopup();
+        scheduleNext();
+      });
+
+      document.body.appendChild(popup);
+      current = popup;
+
+      setTimeout(() => {
+        // auto fecha e agenda o próximo
+        if (current === popup) {
+          closePopup();
+          scheduleNext();
+        }
+      }, SHOW_FOR_MS);
+    }
+
+    window.addEventListener("load", () => {
+      setTimeout(showPopup, START_AFTER_MS);
+    });
+  })();
+</script>
  </body></body>
 
 </html>
+
 
 
 
