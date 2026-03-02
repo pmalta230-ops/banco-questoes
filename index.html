@@ -1388,63 +1388,6 @@ document.addEventListener("DOMContentLoaded", () => {
     startCountdown();
   }
 </script>
- <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const target = document.querySelector("#oferta");
-  if (!target) return;
-
-  // Ajuste fino pro mobile por causa da barra fixa (urgency bar)
-  function getTopOffset() {
-    const bar = document.getElementById("urgency-bar");
-    if (!bar) return 80; // fallback
-    const h = bar.getBoundingClientRect().height || 0;
-    return Math.round(h + 16); // margem extra
-  }
-
-  function smoothScrollToOferta() {
-    const y = target.getBoundingClientRect().top + window.pageYOffset - getTopOffset();
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-
-  // Textos que identificam botões de CTA (ajuste se quiser)
-  const CTA_TEXTS = [
-    "quero começar",
-    "começar agora",
-    "quero treinar",
-    "quero iniciar",
-    "quero aproveitar"
-  ];
-
-  // Pega todos links e botões
-  const clickables = document.querySelectorAll("a, button");
-
-  clickables.forEach((el) => {
-    // ✅ esse aqui é o ÚNICO que deve ir para o link direto
-    if (el.id === "cta-oferta") return;
-
-    const text = (el.textContent || "").trim().toLowerCase();
-    const isCTA = CTA_TEXTS.some(t => text.includes(t));
-    if (!isCTA) return;
-
-    // Se for <a href="#algo"> ou <a href="https://...">, vamos forçar rolagem pro #oferta
-    const handler = (e) => {
-      e.preventDefault();
-      smoothScrollToOferta();
-    };
-
-    // click normal
-    el.addEventListener("click", handler);
-
-    // melhora no iOS/Android (sem delay e sem "falhar")
-    el.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      handler(e);
-    }, { passive: false });
-
-    el.style.cursor = "pointer";
-  });
-});
-</script>
  </body></body>
 
 </html>
