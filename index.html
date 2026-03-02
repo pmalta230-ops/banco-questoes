@@ -1499,9 +1499,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   })();
 </script>
+ <script>
+  function startCountdown() {
+    const countdownEl = document.getElementById("countdown");
+    const barEl = document.getElementById("urgency-bar");
+    if (!countdownEl) return;
+
+    const parse = (txt) => {
+      const m = String(txt || "").trim().match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
+      if (!m) return 14 * 3600 + 37 * 60 + 52;
+      return (parseInt(m[1],10) * 3600) + (parseInt(m[2],10) * 60) + parseInt(m[3],10);
+    };
+
+    let t = parse(countdownEl.textContent);
+
+    const pad = (n) => String(n).padStart(2, "0");
+
+    function tick() {
+      const h = Math.floor(t / 3600);
+      const m = Math.floor((t % 3600) / 60);
+      const s = t % 60;
+
+      countdownEl.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+
+      if (t > 0) {
+        t--;
+        setTimeout(tick, 1000);
+      } else if (barEl) {
+        barEl.innerHTML =
+          '<div class="max-w-6xl mx-auto text-center"><span class="font-bold">⏰ Esta oferta especial expirou</span></div>';
+      }
+    }
+
+    tick();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startCountdown);
+  } else {
+    startCountdown();
+  }
+</script>
  </body></body>
 
 </html>
+
 
 
 
